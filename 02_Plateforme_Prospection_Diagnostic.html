@@ -1,0 +1,1236 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>GSC Business Center · Prospection et diagnostic</title><meta name="robots" content="noindex"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Public+Sans:wght@400;500;600&display=swap"><style>:root{--bg:#F7F6FB;--surface:#fff;--ink:#1C1842;--muted:#5B5878;--line:#DEDCEC;--brand:#29235C;--brand-ink:#fff;--accent:#E6007E;--wash:#EEECF8;--ok:#1B7A4B;--warn:#B26A00;--danger:#B3261E;--f:"Public Sans","Segoe UI",system-ui,sans-serif;--fd:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 var(--f)}
+h1,h2,h3{font-family:var(--fd);line-height:1.2;margin:0 0 10px}
+h1{font-size:1.7rem}h2{font-size:1.25rem}h3{font-size:1.02rem}
+a{color:var(--brand)}
+button{font:inherit;cursor:pointer}
+.sr{position:absolute;left:-9999px}
+/* layout */
+.app{display:grid;grid-template-columns:230px 1fr;min-height:100vh}
+.side{background:var(--brand);color:#fff;padding:18px 14px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:6px}
+.side img{width:150px;margin:2px 6px 14px}
+.side nav{display:grid;gap:4px}
+.side a.nv{display:flex;justify-content:space-between;align-items:center;color:#d9d6f5;text-decoration:none;padding:10px 12px;border-radius:8px;font-weight:500}
+.side a.nv:hover{background:rgba(255,255,255,.08)}
+.side a.nv[aria-current=page]{background:var(--accent);color:#fff}
+.side .cnt{background:rgba(255,255,255,.18);border-radius:99px;font-size:12px;padding:1px 8px}
+.side .foot{margin-top:auto;font-size:12px;color:#aaa6d8;padding:6px}
+main{padding:24px clamp(14px,3vw,36px) 60px;min-width:0}
+.top{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:18px}
+.top .acts{display:flex;gap:8px;flex-wrap:wrap}
+@media(max-width:860px){.app{grid-template-columns:1fr}.side{position:static;height:auto;flex-direction:row;flex-wrap:wrap;align-items:center}.side img{width:110px;margin:0 8px 0 0}.side nav{display:flex;flex-wrap:wrap}.side .foot{display:none}}
+/* ui */
+.btn{display:inline-flex;align-items:center;gap:6px;background:var(--accent);color:#fff;border:0;border-radius:8px;padding:9px 16px;font-weight:600;text-decoration:none}
+.btn:hover{filter:brightness(.93)}
+.btn.line{background:transparent;color:var(--brand);border:1.5px solid var(--brand)}
+.btn.dark{background:var(--brand)}
+.btn.ok{background:#1b9f5c}
+.btn.sm{padding:5px 11px;font-size:13px}
+.btn.danger{background:transparent;color:var(--danger);border:1.5px solid var(--danger)}
+.card,.panel{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:16px}
+.grid{display:grid;gap:14px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:18px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-top:3px solid var(--accent);border-radius:10px;padding:14px}
+.kpi b{display:block;font:800 1.7rem var(--fd)}
+.kpi span{color:var(--muted);font-size:13px}
+.kpi.warn{border-top-color:var(--warn)}.kpi.bad{border-top-color:var(--danger)}
+label{display:block;font-weight:600;font-size:13.5px;margin-bottom:4px}
+input,select,textarea{width:100%;font:inherit;padding:9px 11px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink)}
+textarea{min-height:80px;resize:vertical}
+input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.fld{margin-bottom:12px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.muted{color:var(--muted)}.small{font-size:13px}
+.tag{display:inline-block;border-radius:99px;padding:2px 10px;font-size:12px;font-weight:700;background:var(--wash);color:var(--brand);white-space:nowrap}
+.st-0{background:#e9e7fb}.st-1{background:#fde7f3;color:#a40058}.st-2{background:#fff0d6;color:#8a5200}.st-3{background:#dff0ff;color:#0b5aa6}.st-4{background:#ffe3df;color:#a3281b}.st-5{background:#dcf5e7;color:#14693f}.st-6{background:#e8e8ee;color:#555}
+table.tb{width:100%;border-collapse:collapse;font-size:14px}
+.tb th,.tb td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle}
+.tb th{font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.tb tr.clk{cursor:pointer}.tb tr.clk:hover{background:var(--wash)}
+.tbw{overflow-x:auto}
+.late{color:var(--danger);font-weight:700}
+.tabs{display:flex;gap:4px;border-bottom:2px solid var(--line);margin-bottom:16px;flex-wrap:wrap}
+.tabs a{padding:9px 14px;text-decoration:none;color:var(--muted);font-weight:600;border-bottom:3px solid transparent;margin-bottom:-2px}
+.tabs a[aria-current=page]{color:var(--brand);border-bottom-color:var(--accent)}
+.bars{display:grid;gap:8px}
+.bar{display:grid;grid-template-columns:150px 1fr 40px;gap:8px;align-items:center;font-size:13.5px}
+.bar i{display:block;height:14px;background:var(--wash);border-radius:7px;overflow:hidden}
+.bar i b{display:block;height:100%;background:var(--accent);border-radius:7px}
+/* kanban */
+.kanban{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(230px,1fr);gap:12px;overflow-x:auto;padding-bottom:10px;align-items:start}
+.col{background:var(--wash);border-radius:12px;padding:10px;min-height:140px}
+.col h3{display:flex;justify-content:space-between;font-size:.9rem}
+.col.over{outline:2px dashed var(--accent)}
+.kc{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px;margin-bottom:8px;cursor:grab;font-size:13.5px}
+.kc b{display:block}
+.kc .m{color:var(--muted);font-size:12.5px}
+/* diagnostic */
+.seg{display:inline-flex;border:1.5px solid var(--line);border-radius:8px;overflow:hidden}
+.seg label{position:relative;margin:0;padding:6px 12px;cursor:pointer;font-weight:600;font-size:13px;background:#fff;border-right:1px solid var(--line)}
+.seg label:last-child{border-right:0}
+.seg input{position:absolute;opacity:0;width:1px;height:1px;left:0;top:0}
+.seg input:checked+span{display:block}
+.seg label:has(input:checked){background:var(--brand);color:#fff}
+.seg label.l0:has(input:checked){background:#b3261e}.seg label.l1:has(input:checked){background:#b26a00}.seg label.l2:has(input:checked){background:#1b7a4b}
+.need{display:grid;grid-template-columns:200px auto 1fr;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+@media(max-width:760px){.need{grid-template-columns:1fr}}
+.reco{border:2px solid var(--line);border-radius:12px;padding:14px;background:#fff}
+.reco.top{border-color:var(--accent)}
+/* devis builder */
+.qgrid{display:grid;grid-template-columns:1.1fr 1fr;gap:20px;align-items:start}
+@media(max-width:900px){.qgrid{grid-template-columns:1fr}}
+.qopt{display:flex;align-items:center;gap:10px;padding:10px 12px;margin-bottom:6px;background:#fff;border:1.5px solid var(--line);border-radius:10px;cursor:pointer;font-weight:400;margin-bottom:6px}
+.qopt:has(input:checked){border-color:var(--accent);background:var(--wash)}
+.qopt input{width:18px;height:18px;accent-color:var(--accent);flex:none}
+.qopt .n{flex:1}.qopt .p{font-weight:800;white-space:nowrap}
+fieldset{border:0;padding:0;margin:0 0 14px}
+legend{font:700 12px var(--f);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:0 0 6px}
+.sum{background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:14px}
+.sum .l{display:flex;justify-content:space-between;gap:10px;padding:5px 0;border-bottom:1px solid var(--line);font-size:14px}
+.sum .l.big{font-size:1.2rem;font-weight:800;color:var(--accent);border:0}
+ul.gl,ol.gl{margin:6px 0 12px;padding-left:20px}ul.gl li,ol.gl li{margin-bottom:5px}
+.sheet h3{margin:16px 0 6px;color:var(--brand)}.sheet .qa{margin-bottom:8px;break-inside:avoid}.sheet .ans{min-height:30px;border-bottom:1px dotted #888;padding:2px 0;font-size:13px;white-space:pre-wrap}
+/* rapport */
+.rp-top{display:flex;gap:18px;align-items:center;background:#F7F6FB;border-radius:10px;padding:12px 16px;margin:10px 0}
+.rp-score{min-width:150px;text-align:center}.rp-score b{display:block;font:800 2.4rem var(--fd);color:var(--accent);line-height:1}.rp-score small{font-size:1rem;color:#555}.rp-score span{display:block;font-size:12px;color:#555}.rp-score em{display:inline-block;margin-top:4px;background:var(--brand);color:#fff;border-radius:99px;padding:2px 12px;font-style:normal;font-size:12px;font-weight:700}
+.rpb{margin:6px 0 10px}.rpr{display:grid;grid-template-columns:200px 1fr 80px;gap:10px;align-items:center;margin:6px 0;font-size:13.5px}.rpr i{display:block;height:14px;background:#E8E6F4;border-radius:7px;overflow:hidden}.rpr i b{display:block;height:100%}.rpr em{font-style:normal;font-weight:700;font-size:12.5px}
+.rpk{border-left:5px solid var(--accent);background:#FAFAFD;padding:8px 14px;margin:10px 0;border-radius:0 8px 8px 0;break-inside:avoid}.rpk p{margin:5px 0}
+.rp h3{margin-top:18px}@media(max-width:700px){.rpr{grid-template-columns:1fr}}
+@media print{*{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+/* modal / sheet */
+.modal{position:fixed;inset:0;background:rgba(20,16,50,.6);z-index:50;overflow:auto;padding:20px}
+.modal .box{background:#fff;max-width:860px;margin:0 auto;border-radius:12px;padding:20px}
+.modal .bar2{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.sheet{font-size:14px;color:#111}
+.sheet header{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:3px solid var(--accent);padding-bottom:12px;margin-bottom:16px}
+.sheet header img{width:150px}
+.sheet h2{font-size:1.5rem;color:var(--brand)}
+.sheet table{width:100%;border-collapse:collapse;margin:12px 0}
+.sheet th{background:var(--brand);color:#fff;text-align:left;padding:8px;font-size:12px}
+.sheet td{padding:8px;border-bottom:1px solid #ddd}
+.sheet .r{text-align:right;white-space:nowrap}
+.sheet .tot td{font-weight:800;font-size:1.05rem;border-top:2px solid var(--brand)}
+.sheet .sig{display:grid;grid-template-columns:1fr 1fr;gap:30px;margin-top:30px}
+.sheet .sig div{border-top:1px solid #333;padding-top:6px;font-size:12px;height:90px}
+.sheet .fine{font-size:12px;color:#555;margin-top:14px}
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--brand);color:#fff;padding:10px 18px;border-radius:10px;z-index:99;box-shadow:0 6px 24px rgba(0,0,0,.25)}
+.empty{text-align:center;padding:30px;color:var(--muted)}
+.hist li{padding:6px 0;border-bottom:1px solid var(--line);font-size:14px}
+.hist{list-style:none;margin:0;padding:0}
+@media print{
+  body{background:#fff}
+  .app,.noprint,.toast{display:none!important}
+  .modal{position:static;background:none;padding:0;overflow:visible}
+  .modal .box{max-width:none;padding:0;box-shadow:none;margin:0}
+  .sheet .sig{page-break-inside:avoid}
+  @page{margin:14mm}
+}
+</style></head><body><div id="root"></div><noscript>Cette plateforme demande JavaScript.</noscript><script>(function(){
+"use strict";
+var KEY='gscPlat_v1',KEYB='gscPlat_bak_v1';
+var CATV=2;
+var CATALOG=[{"id": 1, "code": "PRCFE", "name": "Création et formalisation d’entreprise", "family": "Démarrer et formaliser", "for": "Créez et formalisez votre entreprise", "price": 0, "custom": true, "monthly": false, "dur": "3,6 mois", "days": 107, "needs": ["strat", "gestion", "fin"]}, {"id": 2, "code": "PRCTV", "name": "Systèmes de vente et acquisition client", "family": "Être visible et vendre en ligne", "for": "Attirez des prospects et convertissez-les en clients", "price": 150000, "monthly": false, "dur": "2,6 mois", "days": 77, "needs": ["vente", "outils"]}, {"id": 3, "code": "PRCM", "name": "Community management et marketing de contenu", "family": "Être visible et vendre en ligne", "for": "Développez votre présence sur les réseaux sociaux", "price": 100000, "monthly": true, "dur": "4,7 mois", "days": 141, "needs": ["vente"]}, {"id": 4, "code": "PRCSW", "name": "Création de sites web professionnels", "family": "Être visible et vendre en ligne", "for": "Disposez d’un site web professionnel", "price": 150000, "monthly": false, "dur": "3,1 mois", "days": 94, "needs": ["vente", "outils"]}, {"id": 5, "code": "PRCL", "name": "Coaching en leadership et management", "family": "Diriger, structurer et faire croître", "for": "Renforcez votre leadership et votre management", "price": 100000, "monthly": false, "dur": "5,0 mois", "days": 150, "needs": ["gestion", "equipe"]}, {"id": 6, "code": "PRCC", "name": "Coaching stratégique et croissance", "family": "Diriger, structurer et faire croître", "for": "Structurez votre stratégie de croissance", "price": 150000, "monthly": false, "dur": "6,2 mois", "days": 186, "needs": ["strat", "vente", "gestion"]}, {"id": 7, "code": "PRAPME", "name": "Conseil et accompagnement à la performance des PME", "family": "Diriger, structurer et faire croître", "for": "Améliorez la performance de votre PME", "price": 250000, "monthly": false, "dur": "4,9 mois", "days": 147, "needs": ["strat", "vente", "gestion", "equipe"]}, {"id": 8, "code": "PRTD", "name": "Conseil en transformation digitale", "family": "Transformer et accélérer", "for": "Accélérez votre transformation digitale", "price": 300000, "monthly": false, "dur": "6,0 mois", "days": 179, "needs": ["strat", "outils", "gestion"]}, {"id": 9, "code": "PRBAP", "name": "Business Accelerator Premium", "family": "Transformer et accélérer", "for": "Accélérez votre entreprise avec un accompagnement premium", "price": 400000, "monthly": false, "dur": "5,9 mois", "days": 178, "needs": ["strat", "vente", "gestion"]}];
+var LOGO_L="data:image/png;base64,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",LOGO_D="data:image/png;base64,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";
+var NEEDS=[['strat','Stratégie et plan'],['vente','Vente et marketing'],['outils','Outils digitaux'],['gestion','Gestion et organisation'],['equipe','Équipe et leadership'],['fin','Financement']];
+var STATUTS=['Nouveau','Diagnostic planifié','Diagnostic réalisé','Devis envoyé','Relance','Signé / Client','Perdu'];
+var CANAUX=['Site web (commande)','Site web (contact)','Formulaire Google','WhatsApp','Calendly','Recommandation','Partenaire','Réseaux sociaux','Appel entrant','Autre'];
+var STADES=['Idée de projet','Démarrage (moins d’un an)','Activité en cours','PME structurée'];
+var COLS=['id','dateSubmission','canal','nom','entreprise','email','telephone','secteur','stade','description','offreTestee','structuration','acquisition','defiPrincipal','disponibilite','canalContact','consultant','statut','dateDerniereAction','dateProchaineAction','prochaineAction','etapeGSC','notes'];
+var COLLAB={id:'Identifiant',dateSubmission:'Date de saisie',canal:'Canal',nom:'Nom',entreprise:'Entreprise',email:'E-mail',telephone:'Téléphone',secteur:'Secteur',stade:'Stade',description:'Description',offreTestee:'Projet souhaité',structuration:'Structuration',acquisition:'Acquisition clients',defiPrincipal:'Défi principal',disponibilite:'Disponibilité',canalContact:'Canal de contact',consultant:'Consultant',statut:'Statut',dateDerniereAction:'Dernière action',dateProchaineAction:'Prochaine action (date)',prochaineAction:'Prochaine action',etapeGSC:'Étape GSC',notes:'Notes'};
+var DEFAULT_TPL=[
+ {id:'rdv',t:'Confirmation du diagnostic',m:'Bonjour {nom}, c’est {consultant} de GSC Business Center. Je confirme votre diagnostic gratuit d’une heure. Pour choisir votre créneau : {rdv}. À très vite !'},
+ {id:'rappel',t:'Rappel la veille',m:'Bonjour {nom}, petit rappel : votre diagnostic gratuit avec GSC Business Center a lieu demain. Besoin de décaler ? Répondez à ce message.'},
+ {id:'apres',t:'Après le diagnostic',m:'Bonjour {nom}, merci pour notre échange. Je prépare votre devis, vous le recevrez sous 48 h. Projet envisagé : {projet}.'},
+ {id:'devis',t:'Envoi du devis',m:'Bonjour {nom}, voici votre devis {devis} : {projet}, montant {montant}. Valable jusqu’au {validite}. Pour confirmer, répondez simplement OK.'},
+ {id:'relance',t:'Relance du devis (J+5)',m:'Bonjour {nom}, avez-vous pu regarder le devis {devis} ({montant}) ? Je reste disponible pour répondre à vos questions.'},
+ {id:'bienvenue',t:'Bienvenue après signature',m:'Bienvenue chez GSC Business Center, {nom} ! Nous lançons {projet} avec une réunion de démarrage. Je vous propose un créneau très bientôt.'},
+ {id:'merci',t:'Merci et satisfaction',m:'Bonjour {nom}, votre projet est terminé. Merci de votre confiance ! Pouvez-vous répondre à notre court questionnaire de satisfaction ?'}
+];
+function defaults(){return {v:1,settings:{consultants:['Ablaye NDIAYE'],phone:'+221 78 822 84 16',whatsapp:'221788228416',email:'consulting.globalservice@gmail.com',rdv:'https://calendly.com/consulting-globalservice/30min',website:'consultingglobalservice-sudo.github.io',syncUrl:'',syncKey:'',metaUrl:'',metaKey:'',metaDone:[],lastMeta:'',raison:'Global Service Consulting (GSC Business Center)',adresse:'Mbour · Thiès · Dakar (Sénégal)',ninea:'',rccm:'',tvaOn:'oui',tvaRate:18,tvaMode:'ht',payInfo:'',facNum:1,syncDone:[],lastSync:'',validite:15,devisNum:1,legal:'GSC Business Center · Global Service Consulting · Mbour · Thiès · Dakar (Sénégal)',catV:CATV,catalog:CATALOG.map(function(p){return {id:p.id,price:p.price};}),tpl:DEFAULT_TPL.map(function(x){return {id:x.id,t:x.t,m:x.m};})},prospects:[],seq:1};}
+function migrateCat(o){
+  /* passage de 12 à 9 projets : anciens numéros -> nouveaux (8 et 11-12 fusionnés dans 7 et 1) */
+  var MAP={1:1,2:2,3:3,4:4,5:5,6:6,7:7,8:7,9:8,10:9,11:1,12:1};
+  function mp(v){var n=parseInt(v,10);return MAP[n]?String(MAP[n]):'';}
+  o.settings.catalog=CATALOG.map(function(p){return {id:p.id,price:p.price};});
+  o.settings.catV=CATV;
+  (o.prospects||[]).forEach(function(p){
+    if(p.offreTestee)p.offreTestee=mp(p.offreTestee);
+    if(p.rapport&&p.rapport.proj)p.rapport.proj=mp(p.rapport.proj);
+    var E=p.entr;if(!E)return;
+    if(E.proj)E.proj=parseInt(mp(E.proj),10)||0;
+    /* réponses aux questions : conservées pour 2 à 6, 9->8 et 10->9 ; les autres sont archivées */
+    var KEEP={2:2,3:3,4:4,5:5,6:6,9:8,10:9},na={},ng={},arch={a:{},go:{}};
+    Object.keys(E.a||{}).forEach(function(k){if(KEEP[k])na[KEEP[k]]=E.a[k];else arch.a[k]=E.a[k];});
+    Object.keys(E.go||{}).forEach(function(k){if(KEEP[k])ng[KEEP[k]]=E.go[k];else arch.go[k]=E.go[k];});
+    E.a=na;E.go=ng;
+    if(Object.keys(arch.a).length||Object.keys(arch.go).length)E.archive=arch;
+  });
+}
+var S=load();
+function load(){
+  try{var r=localStorage.getItem(KEY);if(r){var o=JSON.parse(r);if(o&&o.prospects&&o.settings){var old=o.settings.catV!==CATV,d=defaults();o.settings=Object.assign(d.settings,o.settings);if(old)migrateCat(o);return o;}}}catch(e){}
+  return defaults();
+}
+var lastBak=0;
+function save(){
+  try{
+    localStorage.setItem(KEY,JSON.stringify(S));
+    var now=Date.now();
+    if(now-lastBak>600000){
+      lastBak=now;
+      var b=[];try{b=JSON.parse(localStorage.getItem(KEYB)||'[]');}catch(e){}
+      b.push({d:new Date().toISOString(),data:JSON.stringify(S)});
+      while(b.length>15)b.shift();
+      try{localStorage.setItem(KEYB,JSON.stringify(b));}catch(e){b=b.slice(-3);try{localStorage.setItem(KEYB,JSON.stringify(b));}catch(e2){}}
+    }
+  }catch(e){toast('Enregistrement impossible : espace du navigateur plein. Exportez vos données.');}
+}
+/* ---------- utilitaires ---------- */
+function $(s,r){return (r||document).querySelector(s);}
+function $$(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s));}
+function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function digits(s){return String(s==null?'':s).replace(/\D+/g,'');}
+function fmt(n){return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g,' ');}
+function pad(n,l){n=String(n);while(n.length<l)n='0'+n;return n;}
+function iso(d){return d.getFullYear()+'-'+pad(d.getMonth()+1,2)+'-'+pad(d.getDate(),2);}
+function today(){return iso(new Date());}
+function addDays(s,n){var d=s?new Date(s+'T12:00:00'):new Date();d.setDate(d.getDate()+n);return iso(d);}
+function fdate(s){if(!s)return '';var p=String(s).slice(0,10).split('-');return p.length===3?p[2]+'/'+p[1]+'/'+p[0]:s;}
+function validEmail(s){return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(String(s||'').trim());}
+function toast(m){var t=document.createElement('div');t.className='toast';t.setAttribute('role','status');t.textContent=m;document.body.appendChild(t);setTimeout(function(){t.remove();},2600);}
+function cat(id){var p=CATALOG.filter(function(x){return x.id===id;})[0];if(!p)return null;var s=S.settings.catalog.filter(function(x){return x.id===id;})[0];return Object.assign({},p,{price:s?s.price:p.price});}
+function pTxt(c,price){return c.custom&&!price?'Sur devis':fmt(price)+' FCFA'+(c.monthly?' / mois':'');}
+function needQuote(ids){return (ids||[]).map(function(i){return cat(i);}).filter(function(c){return c&&c.custom&&!c.price;})[0]||null;}
+function getP(id){return S.prospects.filter(function(p){return p.id===id;})[0];}
+function newProspect(o){
+  var id='P-'+pad(S.seq++,4),p={};
+  COLS.forEach(function(k){p[k]='';});
+  p.id=id;p.dateSubmission=today();p.statut='Nouveau';p.canal='Autre';p.consultant=S.settings.consultants[0]||'';
+  p.diag=null;p.devis=[];p.hist=[];
+  Object.keys(o||{}).forEach(function(k){p[k]=o[k];});
+  addHist(p,'Prospect créé');
+  S.prospects.push(p);return p;
+}
+function addHist(p,t){(p.hist=p.hist||[]).unshift({d:new Date().toISOString(),t:t});}
+function stIdx(s){var i=STATUTS.indexOf(s);return i<0?0:i;}
+function setStatut(p,s,why){
+  if(p.statut===s)return;
+  addHist(p,'Statut : '+p.statut+' → '+s+(why?' ('+why+')':''));
+  p.statut=s;p.dateDerniereAction=today();
+}
+function waLink(p,text){
+  var n=digits(p.telephone);if(!n)return '';
+  return 'https://wa.me/'+n+'?text='+encodeURIComponent(text);
+}
+function fillTpl(m,p,x){
+  x=x||{};
+  var pr=x.projet||(p.offreTestee&&cat(parseInt(p.offreTestee,10))?cat(parseInt(p.offreTestee,10)).name:'votre projet');
+  return String(m).replace(/\{(\w+)\}/g,function(_,k){
+    var v={nom:p.nom||'',entreprise:p.entreprise||'',consultant:p.consultant||S.settings.consultants[0]||'',rdv:S.settings.rdv,projet:pr,devis:x.devis||'',montant:x.montant||'',validite:x.validite||''}[k];
+    return v==null?'{'+k+'}':v;
+  });
+}
+/* ---------- code d'accès ---------- */
+var KEYPIN='gscPlat_pin';
+function cyrb(s){var h1=0xdeadbeef,h2=0x41c6ce57;for(var i=0;i<s.length;i++){var c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677);}h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);return (4294967296*(2097151&h2)+(h1>>>0)).toString(16);}
+function hashPin(pin){
+  var s='gsc|'+pin;
+  try{if(window.crypto&&crypto.subtle&&window.TextEncoder){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)).then(function(b){return 's:'+Array.prototype.map.call(new Uint8Array(b),function(x){return pad(x.toString(16),2);}).join('');});}}catch(e){}
+  return Promise.resolve('c:'+cyrb(s));
+}
+function pinSet(){try{return !!localStorage.getItem(KEYPIN);}catch(e){return false;}}
+function pinCheck(pin){var st=localStorage.getItem(KEYPIN)||'';if(st.charAt(0)==='c')return Promise.resolve(st==='c:'+cyrb('gsc|'+pin));return hashPin(pin).then(function(h){return st===h;});}
+/* ---------- calculs : diagnostic et devis ---------- */
+var LV=['Manquant','Partiel','Acquis'];
+function diagScore(dg){
+  if(!dg)return null;
+  var tot=0,n=0;NEEDS.forEach(function(x){var v=dg.needs&&dg.needs[x[0]];if(v!=null&&v!==''){tot+=parseInt(v,10)*50;n++;}});
+  if(!n)return null;
+  var s=Math.round(tot/n),lab=s<25?'Démarrage':s<50?'Structuration':s<75?'Développement':'Accélération';
+  return {score:s,label:lab};
+}
+function recommend(dg,stade){
+  var miss={};NEEDS.forEach(function(x){var v=dg&&dg.needs?dg.needs[x[0]]:null;miss[x[0]]=v==null||v===''?0:(v==0?2:v==1?1:0);});
+  var out=CATALOG.map(function(p){
+    var g=0,cov=[];p.needs.forEach(function(n){if(miss[n]>0){g+=miss[n];cov.push(n);}});
+    var bonus=0;
+    if(stade===STADES[0]&&p.id===1)bonus=2;
+    if(stade===STADES[1]&&(p.id===1||p.id===4))bonus=1;
+    if(stade===STADES[2]&&(p.id===6||p.id===2||p.id===4))bonus=1;
+    if(stade===STADES[3]&&(p.id===7||p.id===8||p.id===9))bonus=1;
+    var pr=cat(p.id).price;
+    return {p:p,g:g,cov:cov,score:g+bonus-(pr||250000)/600000,price:pr};
+  }).filter(function(r){return r.g>0;});
+  out.sort(function(a,b){return b.score-a.score;});
+  return out.slice(0,3);
+}
+var OPTS=[['comptant','Paiement comptant (100 % à la signature)'],['fidele','Client fidèle (2e projet ou plus)'],['jeune','Jeune entreprise ou porteur de projet (moins d’un an)'],['asso','Association, coopérative ou ONG locale'],['groupe','Groupe de 3 clients ou plus qui s’inscrivent ensemble']];
+function calcDevis(ids,o){
+  var rows=ids.map(function(i){return cat(i);}).filter(Boolean);
+  var fo=rows.filter(function(p){return !p.monthly;}),mo=rows.filter(function(p){return p.monthly;});
+  var sum=0;OPTS.forEach(function(x){if(o[x[0]])sum+=5;});if(rows.length>=2)sum+=10;
+  var list=0,maj=0;fo.forEach(function(p){list+=p.price;});
+  if(o.renf)maj=list*0.25;
+  var rem=(list+maj)*sum/100,net=list+maj-rem;
+  return {rows:rows,fo:fo,mo:mo,rate:sum,list:list,maj:maj,rem:rem,net:net,monthTotal:mo.reduce(function(a,p){return a+p.price;},0)};
+}
+function payPlan(net,comptant){
+  return comptant?[['Paiement comptant à la signature',net]]:[['Acompte à la signature (40 %)',net*0.4],['Milieu du projet (30 %), après le livrable intermédiaire',net*0.3],['Solde à la livraison (30 %)',net*0.3]];
+}
+/* ---------- structure ---------- */
+var VIEWS=[['dash','Tableau de bord'],['prospects','Prospects'],['pipeline','Pipeline'],['factures','Factures'],['guides','Guides d’entretien'],['messages','Messages'],['params','Paramètres']];
+var filt={q:'',st:'',canal:''};
+var DV=null;
+function route(){var h=location.hash.replace(/^#\/?/,''),a=h.split('/');return {v:a[0]||'dash',id:a[1]||'',tab:a[2]||'fiche'};}
+function shell(){
+  var r=route(),cur=r.v==='p'?'prospects':r.v;
+  document.getElementById('root').innerHTML='<div class="app"><aside class="side noprint"><img src="'+LOGO_D+'" alt="GSC Business Center"><nav aria-label="Navigation">'+
+    VIEWS.map(function(v){var c=v[0]==='prospects'?'<span class="cnt">'+S.prospects.length+'</span>':'';return '<a class="nv" href="#/'+v[0]+'"'+(cur===v[0]?' aria-current="page"':'')+'>'+v[1]+c+'</a>';}).join('')+
+    '</nav>'+(pinSet()?'<button class="btn line sm" style="color:#fff;border-color:#8c88c8;margin:10px 6px 0" data-act="lock">🔒 Verrouiller</button>':'')+'<div class="foot">Plateforme de prospection et diagnostic<br>Données enregistrées dans ce navigateur. Pensez à exporter une sauvegarde.</div></aside><main id="main"></main></div><div id="modal"></div>';
+}
+function render(){
+  var r=route();
+  shell();
+  var m=$('#main');
+  if(r.v==='dash')m.innerHTML=viewDash();
+  else if(r.v==='prospects')m.innerHTML=viewProspects();
+  else if(r.v==='pipeline')m.innerHTML=viewPipeline();
+  else if(r.v==='factures')m.innerHTML=viewFactures();
+  else if(r.v==='guides')m.innerHTML=viewGuides(r);
+  else if(r.v==='messages')m.innerHTML=viewMessages();
+  else if(r.v==='params')m.innerHTML=viewParams();
+  else if(r.v==='p')m.innerHTML=viewProspect(r);
+  else m.innerHTML=viewDash();
+  window.scrollTo(0,0);
+  if(r.v==='prospects')refreshList();
+  if(r.v==='p'&&r.tab==='devis')dvUpdate();
+}
+function stTag(s){return '<span class="tag st-'+stIdx(s)+'">'+esc(s)+'</span>';}
+/* ---------- tableau de bord ---------- */
+function bars(items,max){
+  max=max||Math.max.apply(null,items.map(function(i){return i[1];}).concat([1]));
+  return '<div class="bars">'+items.map(function(i){return '<div class="bar"><span>'+esc(i[0])+'</span><i><b style="width:'+Math.round(i[1]/max*100)+'%"></b></i><b>'+i[1]+'</b></div>';}).join('')+'</div>';
+}
+function allDevis(){var o=[];S.prospects.forEach(function(p){(p.devis||[]).forEach(function(d){o.push({p:p,d:d});});});return o;}
+function viewDash(){
+  var P=S.prospects,t=today(),d30=addDays(t,-30);
+  var nouv=P.filter(function(p){return p.dateSubmission>=d30;}).length;
+  var diag=P.filter(function(p){return p.diag;}).length;
+  var dv=allDevis(),sent=dv.filter(function(x){return x.d.statut!=='brouillon';}).length;
+  var sign=P.filter(function(p){return p.statut==='Signé / Client';}).length;
+  var conv=P.length?Math.round(sign/P.length*100):0;
+  var pipe=dv.filter(function(x){return x.d.statut==='envoyé';}).reduce(function(a,x){return a+x.d.calc.net;},0);
+  var ca=dv.filter(function(x){return x.d.statut==='accepté';}).reduce(function(a,x){return a+x.d.calc.net;},0);
+  var fTot=0,fEnc=0;allFactures().forEach(function(x){fTot+=x.f.ttc;fEnc+=fPaidAmt(x.f);});
+  var late=P.filter(function(p){return p.dateProchaineAction&&p.dateProchaineAction<=t&&p.statut!=='Signé / Client'&&p.statut!=='Perdu';});
+  late.sort(function(a,b){return a.dateProchaineAction<b.dateProchaineAction?-1:1;});
+  var cn={};P.forEach(function(p){var c=p.canal||'Autre';cn[c]=(cn[c]||0)+1;});
+  var recent=P.slice().sort(function(a,b){return a.dateSubmission<b.dateSubmission?1:-1;}).slice(0,6);
+  return '<div class="top"><h1>Tableau de bord</h1><div class="acts">'+(syncOn()?'<button class="btn ok" data-act="sync-now">Synchroniser</button>':'')+(metaOn()?'<button class="btn ok" data-act="meta-now">Prospects Meta</button>':'')+'<button class="btn dark" data-act="imp-order">Importer une commande du site</button><a class="btn" href="#/p/new">+ Nouveau prospect</a></div></div>'+
+   '<div class="kpis"><div class="kpi"><b>'+P.length+'</b><span>prospects</span></div><div class="kpi"><b>'+nouv+'</b><span>nouveaux (30 jours)</span></div><div class="kpi"><b>'+diag+'</b><span>diagnostics réalisés</span></div><div class="kpi"><b>'+sent+'</b><span>devis émis</span></div><div class="kpi"><b>'+sign+'</b><span>clients signés</span></div><div class="kpi"><b>'+conv+' %</b><span>taux de conversion</span></div><div class="kpi"><b>'+fmt(pipe)+'</b><span>FCFA en attente (devis envoyés)</span></div><div class="kpi"><b>'+fmt(ca)+'</b><span>FCFA signés</span></div><div class="kpi"><b>'+fmt(fTot)+'</b><span>FCFA facturés</span></div><div class="kpi'+(fTot-fEnc>0?' warn':'')+'"><b>'+fmt(fTot-fEnc)+'</b><span>FCFA à encaisser</span></div><div class="kpi'+(late.length?' bad':'')+'"><b>'+late.length+'</b><span>actions à faire ou en retard</span></div></div>'+
+   '<div class="grid g2"><div class="panel"><h2>À faire maintenant</h2>'+(late.length?'<div class="tbw"><table class="tb"><tbody>'+late.slice(0,8).map(function(p){return '<tr class="clk" data-go="#/p/'+p.id+'"><td><b>'+esc(p.nom)+'</b><br><span class="small muted">'+esc(p.entreprise)+'</span></td><td>'+esc(p.prochaineAction||'Action à définir')+'</td><td class="late">'+fdate(p.dateProchaineAction)+'</td></tr>';}).join('')+'</tbody></table></div>':'<p class="empty">Rien à faire pour le moment.</p>')+'</div>'+
+   '<div class="panel"><h2>Entonnoir</h2>'+bars(STATUTS.map(function(s){return [s,P.filter(function(p){return p.statut===s;}).length];}))+'</div>'+
+   '<div class="panel"><h2>Provenance des prospects</h2>'+(P.length?bars(Object.keys(cn).map(function(k){return [k,cn[k]];})):'<p class="empty">Pas encore de données.</p>')+'</div>'+
+   '<div class="panel"><h2>Derniers prospects</h2>'+(recent.length?'<div class="tbw"><table class="tb"><tbody>'+recent.map(function(p){return '<tr class="clk" data-go="#/p/'+p.id+'"><td><b>'+esc(p.nom)+'</b></td><td>'+stTag(p.statut)+'</td><td class="muted">'+fdate(p.dateSubmission)+'</td></tr>';}).join('')+'</tbody></table></div>':'<p class="empty">Aucun prospect. Ajoutez-en un ou importez un fichier.</p>')+'</div></div>';
+}
+/* ---------- liste des prospects ---------- */
+function opt(list,sel,first){return (first!=null?'<option value="">'+esc(first)+'</option>':'')+list.map(function(x){var v=Array.isArray(x)?x[0]:x,l=Array.isArray(x)?x[1]:x;return '<option value="'+esc(v)+'"'+(String(v)===String(sel)?' selected':'')+'>'+esc(l)+'</option>';}).join('');}
+function viewProspects(){
+  return '<div class="top"><h1>Prospects</h1><div class="acts"><a class="btn" href="#/p/new">+ Nouveau prospect</a>'+(syncOn()?'<button class="btn ok" data-act="sync-now">Synchroniser</button>':'')+(metaOn()?'<button class="btn ok" data-act="meta-now">Prospects Meta</button>':'')+'<button class="btn dark" data-act="imp-order">Importer une commande du site</button><button class="btn line" data-act="import-csv">Importer (CSV)</button><button class="btn line" data-act="export-csv">Exporter (CSV)</button><input type="file" id="fcsv" accept=".csv,.txt,text/csv" hidden></div></div>'+
+   '<div class="panel"><div class="grid g3"><div><label for="fq">Recherche</label><input id="fq" data-filt="q" placeholder="Nom, entreprise, téléphone, e-mail…" value="'+esc(filt.q)+'"></div><div><label for="fst">Statut</label><select id="fst" data-filt="st">'+opt(STATUTS,filt.st,'Tous les statuts')+'</select></div><div><label for="fcn">Canal</label><select id="fcn" data-filt="canal">'+opt(CANAUX,filt.canal,'Tous les canaux')+'</select></div></div></div><div class="panel" id="plist"></div>';
+}
+function refreshList(){
+  var box=$('#plist');if(!box)return;
+  var q=filt.q.toLowerCase().trim(),qd=digits(filt.q);
+  var L=S.prospects.filter(function(p){
+    if(filt.st&&p.statut!==filt.st)return false;
+    if(filt.canal&&p.canal!==filt.canal)return false;
+    if(!q)return true;
+    return [p.nom,p.entreprise,p.email,p.secteur,p.id].join(' ').toLowerCase().indexOf(q)>-1||(qd.length>2&&digits(p.telephone).indexOf(qd)>-1);
+  }).sort(function(a,b){return a.dateSubmission<b.dateSubmission?1:-1;});
+  if(!L.length){box.innerHTML='<p class="empty">'+(S.prospects.length?'Aucun prospect ne correspond.':'Aucun prospect pour le moment. Cliquez sur « Nouveau prospect » ou importez un fichier CSV.')+'</p>';return;}
+  var t=today();
+  box.innerHTML='<p class="muted small">'+L.length+' prospect'+(L.length>1?'s':'')+'</p><div class="tbw"><table class="tb"><thead><tr><th>Nom</th><th>Statut</th><th>Projet souhaité</th><th>Canal</th><th>Prochaine action</th></tr></thead><tbody>'+L.map(function(p){
+    var pj=p.offreTestee&&cat(parseInt(p.offreTestee,10))?cat(parseInt(p.offreTestee,10)).name:'';
+    var late=p.dateProchaineAction&&p.dateProchaineAction<=t&&p.statut!=='Signé / Client'&&p.statut!=='Perdu';
+    return '<tr class="clk" data-go="#/p/'+p.id+'"><td><b>'+esc(p.nom)+'</b><br><span class="small muted">'+esc(p.entreprise||p.telephone||'')+'</span></td><td>'+stTag(p.statut)+'</td><td>'+esc(pj)+'</td><td>'+esc(p.canal)+'</td><td>'+(p.dateProchaineAction?'<span'+(late?' class="late"':'')+'>'+fdate(p.dateProchaineAction)+'</span><br><span class="small muted">'+esc(p.prochaineAction)+'</span>':'<span class="muted">—</span>')+'</td></tr>';
+  }).join('')+'</tbody></table></div>';
+}
+/* ---------- pipeline ---------- */
+function viewPipeline(){
+  return '<div class="top"><h1>Pipeline</h1><span class="muted small">Glissez une carte d’une colonne à l’autre, ou utilisez les flèches.</span></div><div class="kanban">'+STATUTS.map(function(s,i){
+    var L=S.prospects.filter(function(p){return p.statut===s;});
+    return '<div class="col" data-col="'+esc(s)+'"><h3><span>'+esc(s)+'</span><span class="tag">'+L.length+'</span></h3>'+L.map(function(p){
+      var pj=p.offreTestee&&cat(parseInt(p.offreTestee,10))?cat(parseInt(p.offreTestee,10)).name:'';
+      return '<div class="kc" draggable="true" data-id="'+p.id+'"><b>'+esc(p.nom)+'</b><span class="m">'+esc(p.entreprise||'')+'</span>'+(pj?'<span class="m">'+esc(pj)+'</span>':'')+'<div class="row" style="margin-top:6px"><button class="btn line sm" data-act="mv" data-id="'+p.id+'" data-d="-1" aria-label="Colonne précédente"'+(i===0?' disabled':'')+'>◀</button><a class="btn line sm" href="#/p/'+p.id+'">Ouvrir</a><button class="btn line sm" data-act="mv" data-id="'+p.id+'" data-d="1" aria-label="Colonne suivante"'+(i===STATUTS.length-1?' disabled':'')+'>▶</button></div></div>';
+    }).join('')+'</div>';
+  }).join('')+'</div>';
+}
+/* ---------- fiche prospect ---------- */
+function viewProspect(r){
+  var p;
+  if(r.id==='new'){return '<div class="top"><h1>Nouveau prospect</h1><a class="btn line" href="#/prospects">Annuler</a></div>'+fiche(null);}
+  p=getP(r.id);if(!p)return '<p class="empty">Prospect introuvable. <a href="#/prospects">Retour à la liste</a></p>';
+  var tabs=[['fiche','Fiche'],['entr','Entretien'],['diag','Diagnostic'],['rapport','Rapport'],['devis','Devis ('+(p.devis||[]).length+')'],['fact','Factures ('+(p.factures||[]).length+')'],['hist','Historique']];
+  var wa=waLink(p,fillTpl('Bonjour {nom}, ',p));
+  return '<div class="top"><div><h1>'+esc(p.nom)+'</h1><span class="muted">'+esc(p.entreprise||'')+' '+stTag(p.statut)+'</span></div><div class="acts">'+(wa?'<a class="btn ok sm" target="_blank" rel="noopener" href="'+esc(wa)+'">WhatsApp</a>':'')+(p.telephone?'<a class="btn line sm" href="tel:'+esc(digits(p.telephone))+'">Appeler</a>':'')+(validEmail(p.email)?'<a class="btn line sm" href="mailto:'+esc(p.email)+'">E-mail</a>':'')+'<a class="btn line sm" href="#/prospects">← Liste</a></div></div>'+
+   '<nav class="tabs" aria-label="Sections">'+tabs.map(function(t){return '<a href="#/p/'+p.id+'/'+t[0]+'"'+(r.tab===t[0]?' aria-current="page"':'')+'>'+t[1]+'</a>';}).join('')+'</nav>'+
+   (r.tab==='fact'?facturesView(p):r.tab==='rapport'?rapportView(p):r.tab==='entr'?entrView(p):r.tab==='diag'?diagView(p):r.tab==='devis'?devisView(p):r.tab==='hist'?histView(p):fiche(p));
+}
+function fld(k,label,val,type,extra){
+  type=type||'text';
+  return '<div class="fld"><label for="f-'+k+'">'+label+'</label><input id="f-'+k+'" name="'+k+'" type="'+type+'" value="'+esc(val)+'"'+(extra||'')+'></div>';
+}
+function sel(k,label,list,val,first){return '<div class="fld"><label for="f-'+k+'">'+label+'</label><select id="f-'+k+'" name="'+k+'">'+opt(list,val,first)+'</select></div>';}
+function fiche(p){
+  var v=p||{canal:'Formulaire Google',consultant:S.settings.consultants[0]||'',statut:'Nouveau',dateSubmission:today()};
+  var pj=CATALOG.map(function(c){return [String(c.id),c.id+'. '+c.name];});
+  return '<form data-form="prospect" data-id="'+(p?p.id:'')+'" novalidate><div class="grid g2"><div class="panel"><h2>Contact</h2>'+
+   fld('nom','Nom complet *',v.nom||'')+fld('entreprise','Entreprise ou projet',v.entreprise||'')+fld('telephone','Téléphone (avec indicatif, ex. +221 77 000 00 00)',v.telephone||'','tel')+fld('email','E-mail',v.email||'','email')+sel('canalContact','Canal de contact préféré',['WhatsApp','Appel','E-mail'],v.canalContact||'WhatsApp')+fld('disponibilite','Disponibilités',v.disponibilite||'')+
+   '</div><div class="panel"><h2>Situation</h2>'+sel('canal','Provenance',CANAUX,v.canal)+sel('stade','Stade',STADES,v.stade||'','—')+fld('secteur','Secteur d’activité',v.secteur||'')+sel('offreTestee','Projet souhaité',pj,v.offreTestee||'','— Pas encore choisi —')+sel('structuration','Structuration',['Aucune','Partielle','Solide'],v.structuration||'','—')+sel('acquisition','Acquisition de clients',['Aucune','Irrégulière','Régulière'],v.acquisition||'','—')+
+   '</div><div class="panel"><h2>Suivi</h2>'+sel('statut','Statut',STATUTS,v.statut)+sel('consultant','Consultant',S.settings.consultants,v.consultant||'')+fld('prochaineAction','Prochaine action',v.prochaineAction||'')+fld('dateProchaineAction','Date de la prochaine action',v.dateProchaineAction||'','date')+sel('etapeGSC','Étape GSC en cours',[1,2,3,4,5,6,7,8,9,10].map(function(n){return [String(n),'Étape '+n];}),v.etapeGSC||'','—')+
+   '</div><div class="panel"><h2>Description</h2><div class="fld"><label for="f-description">Description du projet ou de l’entreprise</label><textarea id="f-description" name="description">'+esc(v.description||'')+'</textarea></div><div class="fld"><label for="f-defiPrincipal">Défi principal</label><textarea id="f-defiPrincipal" name="defiPrincipal" style="min-height:60px">'+esc(v.defiPrincipal||'')+'</textarea></div><div class="fld"><label for="f-notes">Notes</label><textarea id="f-notes" name="notes">'+esc(v.notes||'')+'</textarea></div></div></div>'+
+   '<div class="row"><button class="btn" type="submit">Enregistrer</button>'+(p?'<button class="btn danger" type="button" data-act="del-p" data-id="'+p.id+'">Supprimer ce prospect</button>':'')+'<span class="muted small" id="fmsg"></span></div></form>';
+}
+function histView(p){
+  return '<div class="panel"><h2>Historique</h2><ul class="hist">'+(p.hist||[]).map(function(h){return '<li><span class="muted small">'+new Date(h.d).toLocaleString('fr-FR')+'</span><br>'+esc(h.t)+'</li>';}).join('')+'</ul></div>';
+}
+/* ---------- diagnostic ---------- */
+function readDiag(f){
+  var dg={needs:{},notes:{},date:today()};
+  NEEDS.forEach(function(x){
+    var r=f.querySelector('input[name="n_'+x[0]+'"]:checked');dg.needs[x[0]]=r?r.value:'';
+    var c=f.elements['c_'+x[0]];dg.notes[x[0]]=c?c.value.trim():'';
+  });
+  ['idee','cible','objectif','budget','resume'].forEach(function(k){dg[k]=f.elements[k]?f.elements[k].value.trim():'';});
+  dg.stade=f.elements.stade?f.elements.stade.value:'';
+  return dg;
+}
+function diagResult(dg){
+  var sc=diagScore(dg);
+  if(!sc)return '<p class="empty">Évaluez au moins un besoin pour voir le résultat et les projets recommandés.</p>';
+  var rec=recommend(dg,dg.stade);
+  return '<div class="kpis" style="margin-bottom:10px"><div class="kpi"><b>'+sc.score+' / 100</b><span>maturité de l’entreprise</span></div><div class="kpi"><b style="font-size:1.2rem">'+sc.label+'</b><span>niveau</span></div></div>'+
+   bars(NEEDS.map(function(x){var v=dg.needs[x[0]];return [x[1],v===''||v==null?0:parseInt(v,10)*50];}),100)+
+   '<h3 style="margin-top:16px">Projets recommandés</h3>'+(rec.length?'<div class="grid g3">'+rec.map(function(r,i){
+     return '<div class="reco'+(i===0?' top':'')+'">'+(i===0?'<span class="tag st-1">Meilleur choix</span> ':'')+'<h3>'+r.p.id+'. '+esc(r.p.name)+'</h3><p class="small muted">'+esc(r.p['for'])+'</p><p class="small">Comble : '+r.cov.map(function(n){return NEEDS.filter(function(x){return x[0]===n;})[0][1];}).join(', ')+'</p><b>'+pTxt(r.p,r.price)+'</b> <span class="muted small">· '+esc(r.p.dur)+'</span></div>';
+   }).join('')+'</div>':'<p class="muted">Tous les besoins sont couverts : aucun projet à recommander.</p>');
+}
+function diagView(p){
+  var dg=p.diag||{needs:{},notes:{},stade:p.stade||''};
+  return '<form data-form="diag" data-id="'+p.id+'" novalidate><div class="grid g2"><div class="panel" style="grid-column:1/-1"><h2>Diagnostic gratuit (1 heure)</h2><p class="muted small">Pour chaque besoin, indiquez si l’entreprise est <b>Manquant</b>, <b>Partiel</b> ou <b>Acquis</b>. Le résultat et les projets recommandés se mettent à jour tout seuls.</p>'+
+   '<div class="fld" style="max-width:320px"><label for="d-stade">Stade de l’entreprise</label><select id="d-stade" name="stade">'+opt(STADES,dg.stade||p.stade,'—')+'</select></div>'+
+   NEEDS.map(function(x){var v=dg.needs[x[0]];return '<div class="need"><b>'+x[1]+'</b><div class="seg">'+LV.map(function(l,i){return '<label class="l'+i+'"><input type="radio" name="n_'+x[0]+'" value="'+i+'"'+(String(v)===String(i)?' checked':'')+'><span>'+l+'</span></label>';}).join('')+'</div><input name="c_'+x[0]+'" placeholder="Remarque (facultatif)" value="'+esc((dg.notes||{})[x[0]]||'')+'" aria-label="Remarque '+x[1]+'"></div>';}).join('')+'</div>'+
+   '<div class="panel"><h2>Découverte</h2><div class="fld"><label for="d-idee">Idée ou activité, problème résolu</label><textarea id="d-idee" name="idee">'+esc(dg.idee||'')+'</textarea></div><div class="fld"><label for="d-cible">Cible et offre de valeur</label><textarea id="d-cible" name="cible">'+esc(dg.cible||'')+'</textarea></div><div class="fld"><label for="d-objectif">Objectif à 6 mois</label><input id="d-objectif" name="objectif" value="'+esc(dg.objectif||'')+'"></div><div class="fld"><label for="d-budget">Budget disponible</label><input id="d-budget" name="budget" value="'+esc(dg.budget||'')+'"></div><div class="fld"><label for="d-resume">Synthèse du consultant</label><textarea id="d-resume" name="resume">'+esc(dg.resume||'')+'</textarea></div></div>'+
+   '<div class="panel"><h2>Résultat</h2><div id="dgres">'+diagResult(dg)+'</div></div></div>'+
+   '<div class="row"><button class="btn" type="submit">Enregistrer le diagnostic</button>'+(p.diag?'<a class="btn dark" href="#/p/'+p.id+'/rapport">Rapport au client →</a><a class="btn line" href="#/p/'+p.id+'/devis">Préparer le devis →</a>':'')+'</div></form>';
+}
+/* ---------- devis ---------- */
+function devisView(p){
+  var rec=p.diag?recommend(p.diag,p.diag.stade):[];
+  if(!DV||DV.pid!==p.id){
+    var sel=[];if(rec.length)sel=[rec[0].p.id];else if(p.offreTestee)sel=[parseInt(p.offreTestee,10)];
+    DV={pid:p.id,sel:sel,o:{},notes:''};
+  }
+  var recIds=rec.map(function(r){return r.p.id;});
+  var fams=[];CATALOG.forEach(function(c){if(fams.indexOf(c.family)<0)fams.push(c.family);});
+  var list=(p.devis||[]).slice().reverse().map(function(d){
+    return '<div class="card"><div class="row" style="justify-content:space-between"><div><b>'+esc(d.num)+'</b> <span class="muted small">'+fdate(d.date)+'</span><br><span class="small">'+d.items.map(function(i){return esc(i.name);}).join(', ')+'</span></div><div><b>'+fmt(d.calc.net)+' FCFA</b>'+(d.calc.monthTotal?' <span class="small muted">+ '+fmt(d.calc.monthTotal)+' / mois</span>':'')+'</div></div><div class="row" style="margin-top:8px"><select data-dvst="'+d.num+'" aria-label="Statut du devis" style="width:auto">'+opt(['brouillon','envoyé','accepté','refusé'],d.statut)+'</select><button class="btn line sm" data-act="dv-view" data-num="'+d.num+'">Voir / imprimer</button>'+(d.statut==='accepté'?'<a class="btn ok sm" href="#/p/'+p.id+'/fact">Facture</a>':'')+'<button class="btn danger sm" data-act="dv-del" data-num="'+d.num+'">Supprimer</button></div></div>';
+  }).join('');
+  return (list?'<div class="panel"><h2>Devis émis</h2>'+list+'</div>':'')+
+   '<form data-form="dv" id="dvform" novalidate><div class="panel"><h2>Nouveau devis automatique</h2><div class="qgrid"><div><h3>1. Projets</h3>'+
+   fams.map(function(f){return '<fieldset><legend>'+esc(f)+'</legend>'+CATALOG.filter(function(c){return c.family===f;}).map(function(c){var pr=cat(c.id);return '<label class="qopt"><input type="checkbox" name="proj" value="'+c.id+'"'+(DV.sel.indexOf(c.id)>-1?' checked':'')+'><span class="n">'+c.id+'. '+esc(c.name)+(recIds.indexOf(c.id)>-1?' <span class="tag st-1">Recommandé</span>':'')+'<br><span class="small muted">'+esc(c.dur)+'</span></span><span class="p">'+pTxt(c,pr.price)+'</span></label>';}).join('')+'</fieldset>';}).join('')+
+   '<h3>2. Paiement et remises</h3><fieldset><legend>Mode de paiement</legend><label class="qopt"><input type="radio" name="pay" value="tranches" checked><span class="n">En 3 tranches (40 % / 30 % / 30 %)</span></label><label class="qopt"><input type="radio" name="pay" value="comptant"><span class="n">Comptant (100 % à la signature)<br><span class="small muted">5 % de remise</span></span></label></fieldset><fieldset><legend>Autres remises (5 % chacune)</legend>'+OPTS.slice(1).map(function(x){return '<label class="qopt"><input type="checkbox" data-o="'+x[0]+'"><span class="n">'+x[1]+'</span></label>';}).join('')+'<p class="small muted">10 % de remise automatique pour deux projets ou plus commandés ensemble.</p></fieldset><fieldset><legend>Option</legend><label class="qopt"><input type="checkbox" data-o="renf"><span class="n">Formule renforcée (suivi plus serré, délai plus court ou options)<br><span class="small muted">+ 25 %</span></span></label></fieldset></div>'+
+   '<div><h3>Récapitulatif</h3><div class="sum" id="dvsum"></div><div class="fld" style="margin-top:12px"><label for="dv-notes">Note à ajouter sur le devis (facultatif)</label><textarea id="dv-notes" name="notes" style="min-height:60px"></textarea></div><button class="btn" type="submit">Générer le devis</button></div></div></div></form>';
+}
+function dvRead(){
+  var f=$('#dvform');if(!f)return;
+  DV.sel=$$('input[name="proj"]:checked',f).map(function(x){return parseInt(x.value,10);});
+  DV.o={};$$('input[data-o]',f).forEach(function(x){DV.o[x.dataset.o]=x.checked;});
+  var pr=$('input[name="pay"]:checked',f);DV.o.comptant=!!(pr&&pr.value==='comptant');
+}
+function dvUpdate(){
+  var f=$('#dvform');if(!f)return;dvRead();
+  var c=calcDevis(DV.sel,DV.o),box=$('#dvsum');
+  if(!c.rows.length){box.innerHTML='<p class="muted">Cochez un ou plusieurs projets.</p>';return;}
+  var h=c.rows.map(function(p){return '<div class="l"><span>'+p.id+'. '+esc(p.name)+'</span><b>'+pTxt(p,p.price)+'</b></div>';}).join('');
+  if(c.fo.length){
+    h+='<div class="l"><span>Total au forfait</span><b>'+fmt(c.list)+' FCFA</b></div>';
+    if(c.maj)h+='<div class="l"><span>Formule renforcée (+25 %)</span><b>+ '+fmt(c.maj)+' FCFA</b></div>';
+    if(c.rate)h+='<div class="l"><span>Remises cumulées ('+c.rate+' %)</span><b>− '+fmt(c.rem)+' FCFA</b></div>';
+    h+='<div class="l big"><span>Total</span><b>'+fmt(c.net)+' FCFA</b></div>';
+    h+=payPlan(c.net,DV.o.comptant).map(function(x){return '<div class="l small"><span>'+x[0]+'</span><b>'+fmt(x[1])+'</b></div>';}).join('');
+  }
+  if(c.mo.length)h+='<div class="l"><span>Facturé chaque mois</span><b>'+fmt(c.monthTotal)+' FCFA / mois</b></div>';
+  box.innerHTML=h;
+}
+function createDevis(p,ids,o,notes){
+  var c=calcDevis(ids,o);
+  if(!c.rows.length)return null;
+  var y=new Date().getFullYear(),num='DEV-'+y+'-'+pad(S.settings.devisNum++,3);
+  var d={num:num,date:today(),validUntil:addDays(today(),parseInt(S.settings.validite,10)||15),items:c.rows.map(function(r){return {id:r.id,name:r.name,price:r.price,monthly:r.monthly,dur:r.dur};}),o:JSON.parse(JSON.stringify(o)),calc:{list:c.list,maj:c.maj,rem:c.rem,rate:c.rate,net:c.net,monthTotal:c.monthTotal},notes:notes||'',statut:'brouillon'};
+  (p.devis=p.devis||[]).push(d);
+  if(!p.offreTestee)p.offreTestee=String(c.rows[0].id);
+  addHist(p,'Devis '+num+' généré ('+fmt(c.net)+' FCFA)');
+  return d;
+}
+function genDevis(p,notes){
+  dvRead();
+  var q=needQuote(DV.sel);if(q){toast('Le projet '+q.id+' est sur devis : saisissez d’abord son montant dans Paramètres > Prix des projets.');return;}
+  var d=createDevis(p,DV.sel,DV.o,notes);
+  if(!d){toast('Cochez au moins un projet.');return;}
+  save();DV=null;
+  openSheet(p.id,d.num);
+}
+/* ---------- commande reçue du site ---------- */
+function parseOrder(t){
+  t=String(t||'');
+  function g(re){var m=t.match(re);return m?m[1].trim():'';}
+  var o={nom:g(/^\s*Nom\s*:\s*(.+)$/mi),telephone:g(/^\s*T[ée]l[ée]phone\s*:\s*(.+)$/mi),email:g(/^\s*E-?mail\s*:\s*(.+)$/mi),entreprise:g(/^\s*Entreprise[^:\n]*:\s*(.+)$/mi)};
+  var ids=[],re=/^\s*-\s*(\d{1,2})\.\s/mg,m;
+  while((m=re.exec(t))){var n=parseInt(m[1],10);if(cat(n)&&ids.indexOf(n)<0)ids.push(n);}
+  if(!ids.length){CATALOG.forEach(function(c){if(t.toLowerCase().indexOf(c.name.toLowerCase())>-1)ids.push(c.id);});}
+  var pay=g(/^\s*Paiement\s*:\s*(.+)$/mi).toLowerCase(),rem=g(/^\s*Remises demand[ée]es\s*:\s*(.+)$/mi).toLowerCase();
+  var opts={comptant:pay.indexOf('comptant')>-1,fidele:rem.indexOf('fid')>-1,jeune:rem.indexOf('jeune')>-1,asso:rem.indexOf('association')>-1,groupe:rem.indexOf('groupe')>-1,renf:/formule renforc[ée]e\s*:\s*oui/i.test(t)};
+  var after=t.split(/Montant indicatif[^\n]*\n?/i)[1]||'';
+  return {o:o,ids:ids,opts:opts,notes:after.trim()};
+}
+function orderModal(txt,msg){
+  $('#modal').innerHTML='<div class="modal"><div class="box"><h2>Importer une commande du site</h2><p class="muted small">Sur le site, le client envoie sa commande par WhatsApp ou par e-mail. Copiez le message reçu, collez-le ci-dessous : la plateforme crée le prospect et prépare le devis.</p><div class="fld"><label for="ordtxt">Message de commande</label><textarea id="ordtxt" style="min-height:220px" placeholder="Bonjour GSC Business Center, Je souhaite commander. Nom : …">'+esc(txt||'')+'</textarea></div>'+(msg?'<p class="late">'+esc(msg)+'</p>':'')+'<div class="row"><button class="btn" data-act="order-go">Créer le prospect et le devis</button><button class="btn line" data-act="close-modal">Annuler</button></div></div></div>';
+}
+function applyOrder(r,canal){
+  var ex=S.prospects.filter(function(p){var e=String(r.o.email||'').toLowerCase(),t=digits(r.o.telephone).slice(-8);return (e&&String(p.email||'').toLowerCase()===e)||(t.length>=8&&digits(p.telephone).slice(-8)===t);})[0],p=ex,d=null;
+  var com=r.ids.length>0;
+  if(!p){p=newProspect({nom:r.o.nom,entreprise:r.o.entreprise,telephone:r.o.telephone,email:r.o.email,canal:canal,offreTestee:com?String(r.ids[0]):'',statut:'Nouveau',description:r.notes,prochaineAction:com?'Confirmer la commande et envoyer le devis':'Répondre au message du site',dateProchaineAction:today()});}
+  else{addHist(p,com?'Nouvelle commande reçue du site':'Nouveau message reçu du site');if(r.notes)p.notes=((p.notes?p.notes+'\n':'')+r.notes);p.prochaineAction=com?'Confirmer la commande et envoyer le devis':'Répondre au message du site';p.dateProchaineAction=today();}
+  if(com&&!needQuote(r.ids))d=createDevis(p,r.ids,r.opts,'');
+  return {p:p,d:d,ex:!!ex};
+}
+function importOrder(txt){
+  var r=parseOrder(txt);
+  if(!r.o.nom||r.o.nom.length<2){orderModal(txt,'Nom introuvable dans le message. Vérifiez que la ligne « Nom : … » est présente.');return;}
+  if(!r.ids.length){orderModal(txt,'Aucun projet reconnu dans le message.');return;}
+  var res=applyOrder(r,'Site web (commande)'),p=res.p,d=res.d;
+  save();
+  $('#modal').innerHTML='';
+  toast(res.ex?'Commande ajoutée au prospect existant.':'Prospect et devis créés.');
+  location.hash='#/p/'+p.id+'/devis';
+  setTimeout(function(){if(d)openSheet(p.id,d.num);},60);
+}
+function devisText(p,d){
+  var lines=d.items.map(function(i){return '- '+i.name+' : '+fmt(i.price)+' FCFA'+(i.monthly?' / mois':'');}).join('\n');
+  var plan=payPlan(d.calc.net,d.o.comptant).map(function(x){return '  '+x[0]+' : '+fmt(x[1])+' FCFA';}).join('\n');
+  return 'Bonjour '+p.nom+',\n\nVoici votre devis '+d.num+' (GSC Business Center) :\n'+lines+'\n\n'+(d.calc.rate?'Remises : '+d.calc.rate+' %\n':'')+(d.items.some(function(i){return !i.monthly;})?'Total : '+fmt(d.calc.net)+' FCFA\n'+plan+'\n':'')+(d.calc.monthTotal?'Facturé chaque mois : '+fmt(d.calc.monthTotal)+' FCFA / mois\n':'')+'\nValable jusqu’au '+fdate(d.validUntil)+'.\nPour confirmer, répondez simplement OK.\n\n'+(S.settings.phone||'')+' · '+(S.settings.email||'');
+}
+function sheetHtml(p,d){
+  var forf=d.items.filter(function(i){return !i.monthly;});
+  return '<div class="sheet"><header><div><h2>DEVIS '+esc(d.num)+'</h2><div>Date : '+fdate(d.date)+'<br>Valable jusqu’au : <b>'+fdate(d.validUntil)+'</b></div></div><div style="text-align:right"><img src="'+LOGO_L+'" alt="GSC Business Center"><div class="small" style="font-size:12px;margin-top:6px">'+esc(S.settings.phone)+'<br>'+esc(S.settings.email)+'<br>'+esc(S.settings.website)+'</div></div></header>'+
+   '<p><b>Client :</b> '+esc(p.nom)+(p.entreprise?' · '+esc(p.entreprise):'')+'<br>'+esc(p.telephone||'')+(p.email?' · '+esc(p.email):'')+'</p>'+
+   '<table><thead><tr><th>Projet</th><th>Durée maximale</th><th class="r">Prix (FCFA)</th></tr></thead><tbody>'+d.items.map(function(i){return '<tr><td>'+i.id+'. '+esc(i.name)+'</td><td>'+esc(i.dur)+'</td><td class="r">'+fmt(i.price)+(i.monthly?' / mois':'')+'</td></tr>';}).join('')+
+   (forf.length?'<tr><td colspan="2">Total au forfait</td><td class="r">'+fmt(d.calc.list)+'</td></tr>'+(d.calc.maj?'<tr><td colspan="2">Formule renforcée (+25 %)</td><td class="r">+ '+fmt(d.calc.maj)+'</td></tr>':'')+(d.calc.rate?'<tr><td colspan="2">Remises ('+d.calc.rate+' %)</td><td class="r">− '+fmt(d.calc.rem)+'</td></tr>':'')+'<tr class="tot"><td colspan="2">TOTAL À PAYER</td><td class="r">'+fmt(d.calc.net)+' FCFA</td></tr>':'')+'</tbody></table>'+
+   (forf.length?'<p><b>Modalités de paiement</b></p><table><tbody>'+payPlan(d.calc.net,d.o.comptant).map(function(x){return '<tr><td>'+x[0]+'</td><td class="r">'+fmt(x[1])+' FCFA</td></tr>';}).join('')+'</tbody></table>':'')+
+   (d.calc.monthTotal?'<p>Services facturés chaque mois : <b>'+fmt(d.calc.monthTotal)+' FCFA / mois</b>.</p>':'')+
+   (d.notes?'<p><b>Note :</b> '+esc(d.notes).replace(/\n/g,'<br>')+'</p>':'')+
+   '<p class="fine">La durée annoncée est un maximum : le projet peut être livré plus tôt. Chaque projet est découpé en étapes, avec un livrable à la fin de chacune. Prix en FCFA, fixes pour toute la durée du projet. '+(tvaCfg().on?(tvaCfg().mode==='ttc'?'Montants TTC, TVA de '+tvaCfg().rate+' % incluse.':'Montants hors taxe : la TVA de '+tvaCfg().rate+' % est ajoutée sur la facture.'):'TVA non applicable.')+'</p>'+
+   '<div class="sig"><div>Bon pour accord, date et signature du client</div><div>Pour GSC Business Center<br>'+esc(p.consultant||'')+'</div></div><p class="fine">'+esc(S.settings.legal)+'</p></div>';
+}
+function openSheet(pid,num){
+  var p=getP(pid),d=(p.devis||[]).filter(function(x){return x.num===num;})[0];if(!d)return;
+  var wa=waLink(p,devisText(p,d));
+  $('#modal').innerHTML='<div class="modal" role="dialog" aria-modal="true" aria-label="Devis '+esc(num)+'"><div class="box"><div class="bar2 noprint"><button class="btn" data-act="dv-print">Imprimer / PDF</button>'+(wa?'<a class="btn ok" target="_blank" rel="noopener" data-act="dv-sent" data-pid="'+pid+'" data-num="'+num+'" href="'+esc(wa)+'">Envoyer par WhatsApp</a>':'')+(validEmail(p.email)?'<a class="btn dark" data-act="dv-sent" data-pid="'+pid+'" data-num="'+num+'" href="mailto:'+esc(p.email)+'?subject='+encodeURIComponent('Votre devis '+num+' – GSC Business Center')+'&body='+encodeURIComponent(devisText(p,d))+'">Envoyer par e-mail</a>':'')+'<button class="btn line" data-copy="'+esc(devisText(p,d))+'">Copier le texte</button><button class="btn line" data-act="close-modal">Fermer</button></div>'+sheetHtml(p,d)+'</div></div>';
+}
+function markSent(pid,num){
+  var p=getP(pid),d=(p.devis||[]).filter(function(x){return x.num===num;})[0];if(!d||d.statut!=='brouillon')return;
+  d.statut='envoyé';setStatut(p,'Devis envoyé');
+  p.prochaineAction='Relancer le devis '+num;p.dateProchaineAction=addDays(today(),5);
+  addHist(p,'Devis '+num+' envoyé, relance prévue le '+fdate(p.dateProchaineAction));
+  save();
+}
+/* ---------- messages ---------- */
+var msgP='';
+function viewMessages(){
+  var p=getP(msgP)||S.prospects[0];
+  var last=p&&(p.devis||[]).length?p.devis[p.devis.length-1]:null;
+  var x=last?{devis:last.num,montant:fmt(last.calc.net)+' FCFA',validite:fdate(last.validUntil),projet:last.items.map(function(i){return i.name;}).join(' + ')}:{};
+  return '<div class="top"><h1>Messages WhatsApp</h1></div>'+(!S.prospects.length?'<p class="empty">Ajoutez un prospect pour préparer des messages.</p>':
+   '<div class="panel" style="max-width:420px"><label for="mp">Prospect</label><select id="mp" data-msgp>'+S.prospects.map(function(q){return '<option value="'+q.id+'"'+(p&&q.id===p.id?' selected':'')+'>'+esc(q.nom)+'</option>';}).join('')+'</select></div><div class="grid g2">'+
+   S.settings.tpl.map(function(t){var txt=fillTpl(t.m,p,x),wa=waLink(p,txt);return '<div class="card"><h3>'+esc(t.t)+'</h3><p style="white-space:pre-wrap">'+esc(txt)+'</p><div class="row">'+(wa?'<a class="btn ok sm" target="_blank" rel="noopener" href="'+esc(wa)+'">Ouvrir dans WhatsApp</a>':'<span class="small muted">Pas de téléphone</span>')+'<button class="btn line sm" data-copy="'+esc(txt)+'">Copier</button></div></div>';}).join('')+'</div>');
+}
+/* ---------- paramètres ---------- */
+function viewParams(){
+  var s=S.settings;
+  return '<div class="top"><h1>Paramètres</h1></div><div class="grid g2">'+
+   '<form class="panel" data-form="params"><h2>Cabinet</h2>'+fld('consultants','Consultants (séparés par une virgule)',s.consultants.join(', '))+fld('phone','Téléphone',s.phone)+fld('whatsapp','WhatsApp (chiffres seulement)',s.whatsapp)+fld('email','E-mail',s.email,'email')+fld('rdv','Lien de prise de rendez-vous',s.rdv)+fld('website','Site web',s.website)+fld('validite','Validité des devis (jours)',s.validite,'number',' min="1"')+fld('legal','Mention en bas du devis',s.legal)+'<button class="btn" type="submit">Enregistrer</button></form>'+
+   '<form class="panel" data-form="catalog"><h2>Prix des projets (FCFA)</h2><div class="tbw"><table class="tb"><tbody>'+CATALOG.map(function(c){return '<tr><td>'+c.id+'. '+esc(c.name)+(c.monthly?' <span class="small muted">(par mois)</span>':'')+(c.custom?' <span class="small muted">(sur devis : saisir le montant avant d’émettre un devis)</span>':'')+'</td><td style="width:140px"><input type="number" min="0" step="1000" name="c'+c.id+'" value="'+cat(c.id).price+'" aria-label="Prix '+esc(c.name)+'"></td></tr>';}).join('')+'</tbody></table></div><br><button class="btn" type="submit">Enregistrer les prix</button></form></div>'+
+   '<form class="panel" data-form="tpl"><h2>Modèles de messages</h2><p class="small muted">Variables : {nom} {entreprise} {consultant} {rdv} {projet} {devis} {montant} {validite}</p>'+S.settings.tpl.map(function(t){return '<div class="fld"><label for="t-'+t.id+'">'+esc(t.t)+'</label><textarea id="t-'+t.id+'" name="'+t.id+'">'+esc(t.m)+'</textarea></div>';}).join('')+'<button class="btn" type="submit">Enregistrer les modèles</button></form>'+
+   facParamsPanel(s)+
+   '<form class="panel" data-form="sync"><h2>Connexion au site</h2><p class="muted small">'+(syncOn()?'Connexion active : les commandes du site arrivent toutes seules.':'Pas encore connecté : les commandes se récupèrent à la main (bouton « Importer une commande du site »).')+'</p>'+fld('syncUrl','Adresse du service (collée depuis Google)',s.syncUrl||'','url',' placeholder="https://script.google.com/macros/s/…/exec"')+fld('syncKey','Code secret (le même que dans le script)',s.syncKey||'','password',' autocomplete="off"')+'<div class="row"><button class="btn" type="submit">Enregistrer</button><button class="btn line" type="button" data-act="sync-now">Tester et synchroniser</button></div><p class="muted small" id="syncmsg">'+(s.lastSync?'Dernière synchronisation : '+esc(new Date(s.lastSync).toLocaleString('fr-FR')):'')+'</p></form>'+
+   '<form class="panel" data-form="meta"><h2>Prospects qualifiés de Meta (plateforme 12)</h2><p class="muted small">'+(metaOn()?'Connexion active : les prospects qui ont répondu à 4 questions sur WhatsApp arrivent tout seuls dans la liste.':'Collez l’adresse du service de la plateforme 12 : les prospects qualifiés via Facebook et Instagram arriveront ici pour faire le diagnostic.')+'</p>'+fld('metaUrl','Adresse du service de la plateforme 12',s.metaUrl||'','url',' placeholder="https://script.google.com/macros/s/…/exec"')+fld('metaKey','Code secret (facultatif, le même que SYNC_KEY dans le script)',s.metaKey||'','password',' autocomplete="off"')+'<div class="row"><button class="btn" type="submit">Enregistrer</button><button class="btn line" type="button" data-act="meta-now">Tester et récupérer</button></div><p class="muted small" id="metamsg">'+(s.lastMeta?'Dernière récupération : '+esc(new Date(s.lastMeta).toLocaleString('fr-FR')):'')+'</p></form>'+
+   '<form class="panel" data-form="pin"><h2>Code d’accès</h2><p class="muted small">'+(pinSet()?'Un code protège actuellement l’ouverture de la plateforme.':'Aucun code pour le moment : toute personne qui ouvre ce fichier voit les prospects.')+'</p>'+(pinSet()?fld('cur','Code actuel','','password',' autocomplete="current-password"'):'')+fld('pin1','Nouveau code (4 caractères minimum)','','password',' autocomplete="new-password"')+fld('pin2','Confirmer le nouveau code','','password',' autocomplete="new-password"')+'<div class="row"><button class="btn" type="submit">'+(pinSet()?'Changer le code':'Activer le code')+'</button>'+(pinSet()?'<button class="btn danger" type="button" data-act="pin-off">Retirer le code</button>':'')+'</div><p class="muted small" id="pinmsg"></p><p class="muted small">Le code verrouille l’accès à la plateforme (verrouillage aussi après 15 minutes sans activité). Il ne chiffre pas les données : gardez aussi l’ordinateur protégé.</p></form>'+
+   '<div class="panel"><h2>Sauvegarde et données</h2><p class="muted small">Vos données restent dans ce navigateur. Exportez régulièrement une sauvegarde. Une copie automatique est aussi gardée (15 dernières).</p><div class="row"><button class="btn" data-act="exp-json">Exporter une sauvegarde (JSON)</button><button class="btn line" data-act="imp-json">Restaurer une sauvegarde</button><input type="file" id="fjson" accept=".json,application/json" hidden><button class="btn line" data-act="restore-bak">Revenir à une copie automatique</button><button class="btn line" data-act="demo">Ajouter 3 exemples fictifs</button><button class="btn danger" data-act="reset">Tout effacer</button></div></div>';
+}
+/* ---------- connexion automatique avec le site ---------- */
+var syncing=false,syncTimer=null;
+function syncOn(){return !!(S.settings.syncUrl&&S.settings.syncKey);}
+function syncUrlFor(act,extra){
+  var u=S.settings.syncUrl;
+  return u+(u.indexOf('?')>-1?'&':'?')+'action='+act+'&key='+encodeURIComponent(S.settings.syncKey)+(extra||'');
+}
+function remoteToOrder(od){
+  var x=od.data||{},rem=Array.isArray(x.remises)?x.remises:[];
+  var ids=[];
+  (Array.isArray(x.projects)?x.projects:[]).forEach(function(q){var n=parseInt(q&&q.n,10);if(cat(n)&&ids.indexOf(n)<0)ids.push(n);});
+  var notes=String(x.message||'');
+  if(x.type!=='commande'&&x.subject)notes=(x.subject+(notes?' : ':'')+notes);
+  return {o:{nom:String(x.name||'').trim(),telephone:String(x.phone==null?'':x.phone).trim(),email:String(x.email||'').trim(),entreprise:String(x.company||'').trim()},ids:ids,opts:{comptant:String(x.paiement||'')==='comptant',fidele:rem.indexOf('fidele')>-1,jeune:rem.indexOf('jeune')>-1,asso:rem.indexOf('asso')>-1,groupe:rem.indexOf('groupe')>-1,renf:!!x.renf},notes:notes};
+}
+function syncMsg(m){var e=$('#syncmsg');if(e)e.textContent=m;}
+function syncOrders(manual){
+  if(!syncOn()){if(manual)toast('Renseignez d’abord la connexion dans Paramètres.');return Promise.resolve();}
+  if(syncing)return Promise.resolve();
+  syncing=true;
+  if(manual)syncMsg('Synchronisation en cours…');
+  return fetch(syncUrlFor('list')).then(function(r){return r.text();}).then(function(t){
+    var j;try{j=JSON.parse(t);}catch(e){throw new Error('page');}
+    if(j.status!=='ok')throw new Error(j.message||'service');
+    var done=S.settings.syncDone||(S.settings.syncDone=[]),ids=[],n=0,last=null;
+    (j.orders||[]).forEach(function(od){
+      ids.push(od.id);
+      if(done.indexOf(od.id)>-1)return;
+      var r=remoteToOrder(od);
+      if(r.o.nom.length<2)return;
+      var res=applyOrder(r,r.ids.length?'Site web (commande)':'Site web (contact)');
+      done.push(od.id);n++;last=res;
+    });
+    while(done.length>500)done.shift();
+    S.settings.lastSync=new Date().toISOString();
+    save();
+    if(ids.length)fetch(syncUrlFor('ack','&ids='+encodeURIComponent(ids.join(',')))).catch(function(){});
+    if(n){
+      toast(n===1?'1 nouvelle demande reçue du site.':n+' nouvelles demandes reçues du site.');
+      var rt=route();
+      if(!$('#modal').innerHTML&&(rt.v==='dash'||rt.v==='prospects'||rt.v==='pipeline'))render();
+    }else if(manual)toast('Aucune nouvelle commande.');
+    syncMsg('Dernière synchronisation : '+new Date().toLocaleString('fr-FR')+(n?' · '+n+' reçue(s)':''));
+  }).catch(function(e){
+    var m=e&&e.message,txt;
+    if(m==='page')txt='Le service répond avec une page Google au lieu des données. Vérifiez que l’accès du déploiement est réglé sur « Tout le monde ».';
+    else if(m==='code incorrect')txt='Le code secret ne correspond pas à celui du script.';
+    else if(m==='CODE_NON_MODIFIE')txt='Dans le script Google, le code est encore « CHANGEZ-MOI ». Remplacez-le par votre code, enregistrez, puis Déployer → Gérer les déploiements → crayon → Nouvelle version → Déployer.';
+    else if(m==='CODE_TROP_COURT')txt='Le code du script Google est trop court : 8 caractères minimum. Modifiez-le, enregistrez, puis republiez une Nouvelle version.';
+    else if(m&&m.indexOf('code secret non')>-1)txt='Le script publié sur Google est une ancienne version. Dans Apps Script : Déployer → Gérer les déploiements → crayon → Nouvelle version → Déployer. Vérifiez aussi que vous avez collé le dernier fichier GSC_Backend_Commandes.gs.';
+    else if(m==='service'||(m&&m!=='Failed to fetch'&&m.indexOf('NetworkError')<0&&m.indexOf('Load failed')<0))txt='Le service a refusé la demande : '+m;
+    else txt='Impossible de joindre le service (internet coupé ou adresse incorrecte).';
+    syncMsg(txt);
+    if(manual)toast(txt);
+  }).then(function(){syncing=false;});
+}
+function syncStart(){
+  syncOrders(false);
+  if(!syncTimer)syncTimer=setInterval(function(){if(unlocked&&!document.hidden)syncOrders(false);},120000);
+}
+/* ---------- prospects qualifiés de la plateforme 12 (Meta) ---------- */
+function metaOn(){return !!S.settings.metaUrl;}
+function metaUrlFor(){
+  var u=S.settings.metaUrl,k=S.settings.metaKey;
+  return u+(u.indexOf('?')>-1?'&':'?')+'action=qualifies'+(k?'&key='+encodeURIComponent(k):'');
+}
+function metaMsg(m){var e=$('#metamsg');if(e)e.textContent=m;}
+var LVL={chaud:'Chaud',tiede:'Tiède',froid:'Froid'};
+function applyMeta(m){
+  var tel=digits(m.tel),lv=LVL[m.niveau]||'—',pn=cat(parseInt(m.projet,10)),nom=String(m.nom||'').trim()||('Prospect WhatsApp '+tel.slice(-4));
+  var qa=(m.qa||[]).map(function(x){return '- '+x.q+' → '+x.r;}).join('\n');
+  var head='Prospect qualifié par la plateforme Meta'+(m.ctwa?' (annonce Facebook / Instagram, conversation WhatsApp)':' (conversation WhatsApp)')+' : niveau '+lv+', score '+m.score+' / 100, '+m.paires+' paires de questions-réponses'+(pn?', projet « '+pn.name+' »':'')+'.';
+  var ex=S.prospects.filter(function(p){return tel.length>=8&&digits(p.telephone).slice(-8)===tel.slice(-8);})[0],p=ex;
+  var due=m.niveau==='chaud'?0:m.niveau==='tiede'?2:7,act=m.niveau==='chaud'?'Appeler aujourd’hui et planifier le diagnostic':'Planifier le diagnostic';
+  if(!p){
+    p=newProspect({nom:nom,telephone:'+'+tel,canal:'WhatsApp',offreTestee:pn?String(pn.id):'',statut:'Nouveau',description:head,notes:qa?('Réponses de qualification :\n'+qa):'',prochaineAction:act,dateProchaineAction:addDays(today(),due)});
+  }else{
+    addHist(p,'Nouveau signal de la plateforme Meta : niveau '+lv+', '+m.paires+' paires');
+    if(!p.offreTestee&&pn)p.offreTestee=String(pn.id);
+    p.notes=((p.notes?p.notes+'\n':'')+head+(qa?'\n'+qa:''));
+    p.prochaineAction=act;p.dateProchaineAction=addDays(today(),due);
+  }
+  p.meta={niveau:m.niveau,score:m.score,paires:m.paires,projet:m.projet,ctwa:m.ctwa||'',dernier:m.dernier||''};
+  addHist(p,'Prospect qualifié reçu de la plateforme Meta (niveau '+lv+')');
+  return {p:p,ex:!!ex};
+}
+var metaBusy=false,metaTimer=null;
+function syncMeta(manual){
+  if(!metaOn()){if(manual)toast('Renseignez d’abord l’adresse du service dans Paramètres.');return Promise.resolve();}
+  if(metaBusy)return Promise.resolve();
+  metaBusy=true;
+  if(manual)metaMsg('Récupération en cours…');
+  return fetch(metaUrlFor()).then(function(r){return r.text();}).then(function(t){
+    var j;try{j=JSON.parse(t);}catch(e){throw new Error('page');}
+    if(j.status!=='ok')throw new Error(j.message||'service');
+    var done=S.settings.metaDone||(S.settings.metaDone=[]),n=0;
+    (j.prospects||[]).forEach(function(m){
+      var id=digits(m.tel);
+      if(!id||done.indexOf(id)>-1)return;
+      applyMeta(m);done.push(id);n++;
+    });
+    while(done.length>2000)done.shift();
+    S.settings.lastMeta=new Date().toISOString();
+    save();
+    if(n){
+      toast(n===1?'1 nouveau prospect qualifié reçu de Meta.':n+' nouveaux prospects qualifiés reçus de Meta.');
+      var rt=route();
+      if(!$('#modal').innerHTML&&(rt.v==='dash'||rt.v==='prospects'||rt.v==='pipeline'))render();
+    }else if(manual)toast('Aucun nouveau prospect qualifié.');
+    metaMsg('Dernière récupération : '+new Date().toLocaleString('fr-FR')+(n?' · '+n+' reçu(s)':''));
+  }).catch(function(e){
+    var m=e&&e.message,txt;
+    if(m==='page')txt='Le service répond avec une page Google au lieu des données. Vérifiez que l’accès du déploiement est « Tout le monde » et que vous avez publié une nouvelle version avec le script mis à jour de la plateforme 12.';
+    else if(m==='code incorrect')txt='Le code secret ne correspond pas à SYNC_KEY dans le script.';
+    else if(m==='service'||(m&&m!=='Failed to fetch'&&m.indexOf('NetworkError')<0&&m.indexOf('Load failed')<0))txt='Le service a refusé la demande : '+m;
+    else txt='Impossible de joindre le service (internet coupé ou adresse incorrecte).';
+    metaMsg(txt);
+    if(manual)toast(txt);
+  }).then(function(){metaBusy=false;});
+}
+function metaStart(){
+  if(!metaOn())return;
+  syncMeta(false);
+  if(!metaTimer)metaTimer=setInterval(function(){if(unlocked&&!document.hidden)syncMeta(false);},120000);
+}
+/* ---------- guides d'entretien de diagnostic (un par projet) ---------- */
+var GUIDES={"G": {"1": {"obj": "Comprendre le projet de la personne et sa situation (simple idée, activité déjà lancée sans papiers, ou création en cours), repérer les démarches et documents administratifs à réaliser, choisir le niveau de business plan (simplifié ou complet) et confirmer le périmètre avant d’établir un devis sur mesure.", "avant": ["Relire la fiche du prospect et son message de commande ou de contact.", "Envoyer la fiche de cadrage 48 h avant le rendez-vous (idée, forme juridique envisagée, documents déjà en main).", "Se remettre en tête les démarches de création et les pièces demandées selon la situation du porteur de projet.", "Avoir sous la main un exemple de synthèse d’une page, de business plan simplifié et de business plan complet avec dossier de financement.", "Vérifier la disponibilité du consultant sur la durée maximale du projet (3,6 mois).", "Prévoir un endroit calme et 15 minutes de marge après l’entretien."], "temps": [[5, "Accueil et cadre", "Se présenter, expliquer le déroulé d’une heure, rappeler que le diagnostic est gratuit et confidentiel."], [15, "Le projet et sa situation", "Laisser la personne présenter son idée ou son activité, puis préciser où elle en est et ce qui a déjà été fait."], [10, "Démarches et documents administratifs", "Faire le point sur la forme juridique envisagée, les démarches déjà engagées et les documents disponibles."], [10, "Business plan : niveau et destinataire", "Savoir à qui le plan sera présenté et choisir entre business plan simplifié et complet."], [10, "Chiffres, financement et disponibilité", "Estimer le besoin de financement, l’apport, le temps disponible et le budget prévu."], [10, "Restitution et suite", "Résumer en 3 phrases, confirmer le périmètre (démarches, documents, business plan), annoncer le devis sous 48 h."]], "blocs": [{"t": "Projet et situation", "q": ["Racontez-moi votre projet en une seule phrase.", "Où en êtes-vous : simple idée, activité déjà commencée sans papiers, ou démarches déjà engagées ?", "Quel problème précis votre projet résout-il, et pour qui (qui est votre premier client) ?", "Avez-vous déjà parlé à de futurs clients ? Combien et qu’ont-ils dit ?", "Combien d’heures par semaine pouvez-vous consacrer à la mise en place ?", "Qui vous soutient aujourd’hui (famille, associé, mentor) ?"]}, {"t": "Démarches et documents administratifs", "q": ["Quelle forme juridique envisagez-vous, ou avez-vous besoin d’être conseillé(e) ?", "Quelles démarches avez-vous déjà faites (nom de l’activité, enregistrement, compte bancaire) ?", "Combien d’associés y a-t-il, et qui apporte quoi ?", "Avez-vous un local ou une adresse pour l’activité ?", "Quels documents avez-vous déjà (pièces d’identité, statuts, contrats, modèles de facture) ?", "Pour quelle date l’entreprise doit-elle être formalisée, et pourquoi cette date ?"]}, {"t": "Business plan et financement", "q": ["À qui voulez-vous présenter le business plan : une banque, un partenaire, un investisseur, ou pour vous-même ?", "Un document simple suffit-il, ou le financeur attend-il une étude détaillée avec marché, risques et scénarios chiffrés ?", "De quel montant avez-vous besoin pour démarrer, à peu près, et quel apport personnel pouvez-vous mettre ?", "Cherchez-vous un prêt, une subvention, un investisseur, ou aucun financement ?", "Avez-vous déjà estimé vos ventes et vos charges ?", "Êtes-vous prêt(e) à mener une courte enquête auprès de votre cible (pour un business plan complet) ?"]}, {"t": "Disponibilité et budget", "q": ["Pouvez-vous répondre à nos questions et fournir vos documents et chiffres pendant la durée du projet (3,6 mois au maximum) ?", "Qui décide de la commande ?", "Ce projet est établi sur devis : quel budget avez-vous prévu pour la création et la formalisation ?", "Préférez-vous payer comptant ou en 3 tranches ?", "Quel résultat attendez-vous : entreprise formalisée, business plan simplifié, étude complète, plan de lancement ?"]}], "go": ["Porteur de projet ou entrepreneur qui veut créer ou formaliser son activité", "Sait à qui le business plan sera présenté (banque, partenaire ou pilotage du démarrage), ou n’en a pas besoin", "Peut fournir ses pièces, ses documents et ses chiffres dans les délais", "Disponible pendant toute la durée du projet (3,6 mois au maximum)", "Budget compatible avec le devis présenté (paiement en 3 tranches possible)"], "stop": ["Entreprise déjà formalisée qui veut surtout des clients : orienter vers le projet 2 (Systèmes de vente et acquisition client) ou 6 (Coaching stratégique et croissance).", "Veut seulement un site ou des publications sur les réseaux : orienter vers le projet 4 (Création de sites web professionnels) ou 3 (Community management et marketing de contenu).", "Entreprise déjà structurée avec une équipe à organiser : orienter vers le projet 7 (Conseil et accompagnement à la performance des PME).", "Cherche un financement sans vouloir fournir ses chiffres ni travailler son projet : l’accompagnement ne convient pas."], "apres": ["Envoyer le devis dans les 48 h (onglet Devis), en précisant le périmètre : démarches, documents, niveau de business plan.", "Envoyer la fiche de cadrage et la liste des documents et chiffres à réunir.", "Relancer à J+5 si pas de réponse.", "Si accord : planifier la réunion de démarrage dans les 3 jours."]}, "2": {"obj": "Vérifier qu’il existe une offre claire qui se vend déjà (ou qui peut se tester), un minimum d’audience et la possibilité de payer en ligne, avant de construire le système de vente et d’acquisition client.", "avant": ["Regarder les pages, le site ou les réseaux du prospect avant l’appel.", "Repérer 2 ou 3 tunnels de concurrents à montrer comme exemples.", "Préparer un schéma simple : visiteur → page → commande → paiement → suivi.", "Vérifier quels moyens de paiement en ligne sont possibles (Wave, Orange Money, carte)."], "temps": [[5, "Accueil et cadre", "Présenter le déroulé et l’objectif : savoir si un tunnel est la bonne solution."], [15, "Offre et prix", "Faire décrire le produit ou service, son prix, sa marge et ses ventes actuelles."], [15, "Parcours client actuel", "Reconstituer le chemin du premier contact à l’achat et repérer où l’on perd des clients."], [10, "Audience et trafic", "Mesurer le nombre de contacts, les canaux et le budget publicitaire."], [5, "Paiement et technique", "Vérifier domaine, outils, paiement en ligne, contenus disponibles."], [10, "Restitution et suite", "Montrer les points faibles du parcours, confirmer ou non le tunnel, annoncer le devis."]], "blocs": [{"t": "Offre et prix", "q": ["Quel produit ou service voulez-vous vendre en ligne en priorité ?", "À quel prix, et quelle est votre marge ?", "Combien de ventes faites-vous par mois aujourd’hui, et à qui ?", "Quel résultat concret le client obtient-il après l’achat ?", "Avez-vous une offre complémentaire à proposer après la première vente ?", "Proposez-vous une garantie ou un essai ?"]}, {"t": "Parcours client actuel", "q": ["Comment vos clients vous trouvent-ils aujourd’hui ?", "Que se passe-t-il entre le premier contact et l’achat ?", "Sur 10 personnes qui vous contactent, combien achètent ?", "À quel moment perdez-vous le plus de clients ?", "Comment suivez-vous vos prospects (cahier, WhatsApp, tableau) ?", "Qui répond aux messages et en combien de temps ?"]}, {"t": "Audience et trafic", "q": ["Combien de personnes pouvez-vous toucher (abonnés, contacts WhatsApp, liste e-mail) ?", "Faites-vous déjà de la publicité ? Quel budget par mois ?", "Quels contenus ou messages ont déjà bien marché ?", "Avez-vous une liste de clients à qui vendre à nouveau ?"]}, {"t": "Paiement et technique", "q": ["Comment vos clients paient-ils aujourd’hui ?", "Avez-vous un nom de domaine, un site ou une page professionnelle ?", "Avez-vous des photos, vidéos et témoignages utilisables ?", "Qui gérera le tunnel et répondra aux commandes après la mise en ligne ?", "Quelles contraintes de livraison ou de service après-vente avez-vous ?"]}], "go": ["Une offre claire avec un prix défini", "Au moins quelques ventes déjà réalisées (ou un test possible)", "Une audience existante ou un budget pour attirer du trafic", "Paiement en ligne possible (mobile money ou carte)", "Une personne disponible pour répondre aux commandes"], "stop": ["Aucune offre définie : commencer par le projet 1 (Création et formalisation d’entreprise).", "Ni audience ni budget : commencer par le projet 3 (Community management et marketing de contenu).", "Veut seulement se présenter en ligne : orienter vers le projet 4 (Création de sites web professionnels)."], "apres": ["Envoyer le devis sous 48 h.", "Préparer la carte du parcours client (une page) à présenter avec le devis.", "Lister les accès à demander : domaine, pages, outils de paiement.", "Relancer à J+5."]}, "3": {"obj": "Comprendre la présence actuelle sur les réseaux, les objectifs, la cible et les ressources de contenu, et confirmer que le client peut valider les publications vite et s’engager chaque mois.", "avant": ["Regarder les pages Facebook, Instagram, TikTok, LinkedIn du prospect.", "Noter fréquence, qualité des visuels, interactions, ton.", "Repérer 2 concurrents bien animés pour comparer.", "Préparer un exemple de calendrier éditorial sur une semaine."], "temps": [[5, "Accueil et cadre", "Expliquer que le service est facturé chaque mois et le déroulé de l’entretien."], [15, "Présence actuelle", "Passer chaque réseau en revue : audience, fréquence, résultats, qui publie."], [15, "Objectifs et cible", "Définir ce que les réseaux doivent apporter et à qui ils parlent."], [10, "Contenu et validation", "Voir ce qu’on peut filmer, photographier, et comment se fait la validation."], [5, "Publicité et budget", "Parler du budget publicitaire séparé et des indicateurs suivis."], [10, "Restitution et suite", "Présenter les 3 priorités, confirmer l’engagement mensuel, annoncer le devis."]], "blocs": [{"t": "Présence actuelle", "q": ["Sur quels réseaux êtes-vous présent(e) et depuis quand ?", "Combien d’abonnés avez-vous sur chacun ?", "À quelle fréquence publiez-vous ?", "Quelles publications ont le mieux marché, et pourquoi à votre avis ?", "Qui s’occupe des réseaux aujourd’hui ?", "Avez-vous déjà eu un community manager ? Qu’est-ce qui n’a pas marché ?"]}, {"t": "Objectifs et cible", "q": ["Que voulez-vous obtenir des réseaux : être connu, vendre, recruter, fidéliser ?", "Qui sont vos clients idéaux (âge, ville, métier) ?", "Sur quels réseaux se trouvent-ils vraiment ?", "Comment décririez-vous le ton de votre marque (sérieux, proche, humoristique) ?", "Quelles marques ou concurrents admirez-vous sur les réseaux ?", "Quel chiffre vous ferait dire que c’est un succès dans 3 mois ?"]}, {"t": "Contenu et validation", "q": ["Pouvez-vous fournir des photos et vidéos de vos produits ou de votre travail ?", "Acceptez-vous d’apparaître en vidéo ?", "Qui valide les publications, et sous combien de temps ?", "Qui répond aux messages et commentaires, aux heures d’ouverture ?", "Y a-t-il des sujets ou des mots à éviter ?"]}, {"t": "Publicité et budget", "q": ["Avez-vous déjà fait de la publicité payante ? Avec quel résultat ?", "Quel budget publicitaire mensuel pouvez-vous prévoir en plus du service ?", "Pouvez-vous vous engager sur plusieurs mois ? Combien ?", "Quels rapports voulez-vous recevoir et à quel rythme ?"]}], "go": ["Au moins un réseau où se trouve réellement la cible", "Une personne qui valide les publications sous 48 h", "Des contenus disponibles ou un accès au terrain pour en produire", "Budget mensuel de 100 000 FCFA confirmé, plus un budget publicitaire si besoin", "Objectifs mesurables et réalistes"], "stop": ["Pas d’offre claire à promouvoir : commencer par le projet 1 (Création et formalisation d’entreprise).", "Attend des ventes automatiques sans contenu : orienter vers le projet 2 (Systèmes de vente et acquisition client).", "Attend des résultats en deux semaines : réajuster les attentes avant tout devis."], "apres": ["Envoyer le devis (rappeler que le tarif est mensuel).", "Préparer une proposition de calendrier éditorial pour la 1re semaine.", "Demander les accès aux pages et les éléments de marque.", "Relancer à J+5."]}, "4": {"obj": "Comprendre à quoi doit servir le site, ce que le visiteur doit y faire, et vérifier que le client peut fournir contenus et décisions dans les délais.", "avant": ["Regarder le site actuel s’il existe, ou la page Facebook.", "Chercher 3 sites de concurrents et noter leurs points forts.", "Vérifier si le nom de domaine souhaité est libre.", "Préparer l’exemple d’arborescence d’un site de 5 pages."], "temps": [[5, "Accueil et cadre", "Présenter le déroulé et ce que l’entretien permettra de décider."], [15, "Objectif du site", "Savoir pourquoi, pour qui et pour faire quoi."], [15, "Contenu et identité visuelle", "Faire l’inventaire des logos, textes, photos, témoignages."], [10, "Technique et suite", "Domaine, hébergement, mises à jour, référencement."], [5, "Délais et décision", "Date souhaitée, décideur, disponibilité pour valider."], [10, "Restitution et suite", "Proposer l’arborescence, confirmer le périmètre, annoncer le devis."]], "blocs": [{"t": "Objectif du site", "q": ["Pourquoi voulez-vous un site internet ?", "Qui sont les visiteurs que vous voulez attirer ?", "Que doit faire un visiteur sur le site : appeler, écrire, réserver, commander ?", "Avez-vous déjà un site ? Qu’est-ce qui ne va pas ?", "Quels sites aimez-vous, et pourquoi ?", "Quelles fonctions voulez-vous : formulaire, blog, réservation, boutique, plusieurs langues ?"]}, {"t": "Contenu et identité visuelle", "q": ["Avez-vous un logo, des couleurs et une charte graphique ?", "Les textes de présentation sont-ils prêts, ou faut-il les écrire ?", "Avez-vous de bonnes photos de vos produits, locaux, équipe ?", "Avez-vous des témoignages ou des références clients ?", "Avez-vous les mentions légales (nom, adresse, numéro d’enregistrement) ?"]}, {"t": "Technique et suite", "q": ["Avez-vous déjà acheté un nom de domaine ? Chez qui ?", "Avez-vous une adresse e-mail professionnelle ?", "Qui mettra le site à jour après la livraison ?", "Voulez-vous apparaître sur Google pour votre ville ou votre zone ?", "Acceptez-vous les frais annuels de domaine et d’hébergement ?"]}, {"t": "Délais et décision", "q": ["Pour quelle date voulez-vous que le site soit en ligne, et pourquoi cette date ?", "Qui décide et valide les maquettes ?", "Pouvez-vous répondre sous 48 h pendant le projet ?", "Quel budget avez-vous prévu pour le site ?"]}], "go": ["Activité existante ou clairement définie", "Contenus disponibles ou capacité à les fournir rapidement", "Un seul décideur disponible pour valider", "Délai réaliste (environ 3 mois)", "Budget compatible avec 150 000 FCFA"], "stop": ["Veut une boutique en ligne complexe ou une application mobile : étudier un devis spécifique.", "Aucune offre définie : commencer par le projet 1 (Création et formalisation d’entreprise).", "Veut surtout du trafic et des ventes : projet 2 (Systèmes de vente) ou 3 (Community management)."], "apres": ["Envoyer le devis sous 48 h avec la liste des pages prévues.", "Envoyer la liste des éléments à préparer (logo, textes, photos).", "Vérifier la disponibilité du nom de domaine.", "Relancer à J+5."]}, "5": {"obj": "Comprendre le rôle du dirigeant, ses situations difficiles avec l’équipe, et mesurer sa volonté réelle de changer sa façon de diriger. Le parcours peut intégrer le diagnostic organisationnel et les priorités de structuration d’une PME.", "avant": ["Relire la fiche et noter la taille de l’équipe.", "Préparer 3 situations de leadership à faire raconter (conflit, délégation, décision).", "Préparer le modèle d’évaluation du style de leadership.", "Prévoir un entretien sans interruption."], "temps": [[5, "Accueil et cadre", "Poser la confidentialité : le dirigeant va parler de ses difficultés."], [10, "Rôle et contexte", "Poste, ancienneté, taille et structure de l’équipe."], [20, "Défis de leadership", "Faire raconter 2 ou 3 situations récentes difficiles."], [10, "Équipe et communication", "Réunions, retours, objectifs partagés, absences, départs."], [5, "Engagement personnel", "Temps disponible, ouverture aux retours, objectif à 5 mois."], [10, "Restitution et suite", "Nommer les 2 axes de progression, annoncer le devis."]], "blocs": [{"t": "Rôle et contexte", "q": ["Quel est votre rôle exact et depuis quand le tenez-vous ?", "Combien de personnes dirigez-vous, et à quel niveau ?", "Comment êtes-vous devenu(e) responsable ?", "Qu’est-ce qui marche bien dans votre équipe ?", "Quel est le plus grand défi de l’entreprise en ce moment ?"]}, {"t": "Défis de leadership", "q": ["Racontez une situation récente où vous avez perdu patience ou été en difficulté avec l’équipe.", "Avez-vous du mal à déléguer ? Qu’est-ce que vous gardez pour vous ?", "Comment gérez-vous un conflit entre deux personnes ?", "Quelle décision difficile avez-vous repoussée ?", "Comment gérez-vous le stress et la fatigue ?", "Comment votre équipe vous décrirait-elle en trois mots ?"]}, {"t": "Équipe et communication", "q": ["À quelle fréquence réunissez-vous l’équipe, et pour quoi faire ?", "Chacun connaît-il ses objectifs ?", "Comment donnez-vous des retours, positifs et négatifs ?", "Y a-t-il eu des départs ou des absences répétées récemment ?", "Avez-vous des responsables intermédiaires ?"]}, {"t": "Engagement personnel", "q": ["Combien d’heures par semaine pouvez-vous consacrer au coaching ?", "Êtes-vous prêt(e) à recueillir l’avis de votre équipe sur votre façon de diriger ?", "Quel changement précis voulez-vous voir dans 5 mois ?", "Qu’avez-vous déjà essayé pour progresser (formation, lecture, mentor) ?", "Quelqu’un d’autre (associé, conjoint) est-il concerné par ce changement ?"]}], "go": ["Dirige déjà une équipe, ou va en recruter bientôt", "Une difficulté de leadership nette et identifiée", "Disponible pour des séances régulières", "Ouvert(e) aux retours de son équipe", "Objectif de changement précis et réaliste"], "stop": ["Le vrai problème est le chiffre d’affaires ou la trésorerie : orienter vers le projet 6 (Coaching stratégique et croissance) ou 7 (Performance des PME).", "Travaille seul(e), sans projet d’équipe : projet 1 (Création et formalisation d’entreprise).", "Conflit juridique ou social grave : hors périmètre, conseiller un avocat."], "apres": ["Envoyer le devis sous 48 h.", "Envoyer le questionnaire d’évaluation du style de leadership.", "Proposer un créneau de séance hebdomadaire fixe.", "Relancer à J+5."]}, "6": {"obj": "Mesurer les chiffres de l’entreprise, trouver ce qui bloque la croissance et vérifier que le dirigeant a des clients réguliers, des données et du temps pour une séance stratégique chaque semaine. Le projet intègre aussi les besoins de performance et d’organisation de l’entreprise.", "avant": ["Demander (si possible) le chiffre d’affaires des 6 derniers mois.", "Regarder l’offre, les prix et la présence en ligne du prospect.", "Préparer un schéma d’entonnoir : contacts, devis, ventes.", "Préparer la grille d’audit ventes et marketing."], "temps": [[5, "Accueil et cadre", "Expliquer qu’on va parler chiffres, en toute confidentialité."], [15, "Chiffres clés", "Chiffre d’affaires, marge, clients, panier moyen, trésorerie."], [15, "Ventes et marketing", "D’où viennent les clients, combien de prospects, quel taux de conversion."], [10, "Blocages et ambition", "Ce qui freine la croissance et l’objectif des 12 prochains mois."], [5, "Organisation et engagement", "Qui fait quoi, temps du dirigeant, séance hebdomadaire."], [10, "Restitution et suite", "Nommer le goulot principal, confirmer le projet, annoncer le devis."]], "blocs": [{"t": "Chiffres clés", "q": ["Quel est votre chiffre d’affaires mensuel moyen sur les 6 derniers mois ?", "Quels ont été le meilleur et le pire mois ?", "Quelle est votre marge à peu près ?", "Combien de clients actifs avez-vous, et quel est le panier moyen ?", "Quelle part de vos clients revient acheter ?", "Votre trésorerie est-elle confortable, juste ou tendue ?"]}, {"t": "Ventes et marketing", "q": ["D’où viennent vos clients (bouche à oreille, réseaux, pubs, partenaires) ?", "Combien de prospects avez-vous par mois ?", "Sur 10 prospects, combien deviennent clients ?", "Comment se déroule une vente chez vous, du premier contact au paiement ?", "Suivez-vous vos prospects dans un outil ou un cahier ?", "Quelle est votre offre phare et qu’est-ce qui vous distingue ?"]}, {"t": "Blocages et ambition", "q": ["Qu’est-ce qui vous empêche de grandir en ce moment ?", "Quel chiffre d’affaires visez-vous dans 12 mois ?", "Qu’avez-vous déjà essayé pour grandir ? Qu’est-ce qui n’a pas marché ?", "Votre goulot est-il le temps, l’argent, l’équipe ou les clients ?", "Que se passerait-il si votre activité doublait demain ?"]}, {"t": "Organisation et engagement", "q": ["Qui fait quoi dans l’entreprise ?", "Combien d’heures par semaine passez-vous sur l’opérationnel ?", "Quels indicateurs suivez-vous chaque semaine ?", "Pouvez-vous bloquer une séance stratégique par semaine ?", "Quel budget avez-vous prévu pour être accompagné(e) ?"]}], "go": ["Activité depuis au moins un an avec des clients réguliers", "Objectif de croissance chiffré", "Chiffres disponibles et partagés honnêtement", "Disponible pour une séance stratégique par semaine", "Capacité à livrer davantage si les ventes augmentent"], "stop": ["Pas encore de clients : projet 1 (Création et formalisation d’entreprise).", "Désordre administratif et financier général : projet 7 (Conseil et accompagnement à la performance des PME).", "Besoin unique de visibilité en ligne : projet 3 (Community management) ou 4 (Création de sites web)."], "apres": ["Envoyer le devis sous 48 h avec l’objectif de croissance noté.", "Envoyer la liste des chiffres à préparer pour l’audit.", "Proposer le créneau fixe de séance hebdomadaire.", "Relancer à J+5."]}, "7": {"obj": "Faire un tour complet de la PME (administration, finances, vente, équipe, outils) pour repérer les zones de désordre et les risques, situer l’entreprise dans les étapes de la Méthode GSC (cadre de mise en application du projet) et confirmer que le dirigeant est prêt à ouvrir ses documents.", "avant": ["Demander de préparer : statuts, relevé bancaire récent, liste du personnel, exemple de facture.", "Préparer la grille d’audit en 5 domaines.", "Regarder le site ou les pages de la PME.", "Prévoir un entretien un peu plus approfondi, si possible avec la personne qui tient la comptabilité.", "Relire les 10 étapes de la Méthode GSC, utilisées comme cadre de mise en application."], "temps": [[5, "Accueil et cadre", "Expliquer le tour d’horizon en 5 domaines et le besoin d’honnêteté."], [10, "Administration et juridique", "Statut, enregistrement, impôts, contrats, assurances."], [15, "Finances", "Comptabilité, trésorerie, dépenses, financement."], [10, "Commercial et marketing", "Suivi des clients, devis, supports, présence en ligne."], [10, "Équipe et outils", "Effectif, rôles, procédures, outils numériques."], [10, "Restitution et suite", "Classer les 5 domaines (rouge, orange, vert), situer l’entreprise dans les étapes de la Méthode GSC, annoncer le devis."]], "blocs": [{"t": "Administration et juridique", "q": ["Quel est le statut de l’entreprise et depuis quand existe-t-elle ?", "Les enregistrements et déclarations obligatoires sont-ils à jour ?", "Avez-vous des contrats écrits avec vos clients, fournisseurs, employés ?", "Avez-vous des assurances ?", "Où rangez-vous vos documents importants ?"]}, {"t": "Finances", "q": ["Qui tient la comptabilité, et à quelle fréquence ?", "Séparez-vous les comptes de l’entreprise et vos comptes personnels ?", "Suivez-vous vos dépenses et vos entrées chaque semaine ?", "Avez-vous un budget prévisionnel ou un plan de trésorerie ?", "Avez-vous des dettes ou des retards de paiement clients ?", "Cherchez-vous un financement ? Pour quoi faire ?"]}, {"t": "Commercial et marketing", "q": ["Comment suivez-vous vos clients et vos devis ?", "Quelle est votre stratégie pour trouver de nouveaux clients ?", "Avez-vous des supports de vente (catalogue, présentation) ?", "Quelle est votre présence en ligne (site, réseaux, fiche Google) ?", "Quels sont vos principaux clients, et dépendez-vous d’un seul ?"]}, {"t": "Équipe et outils", "q": ["Combien de personnes travaillent chez vous, et avec quels contrats ?", "Chacun a-t-il un rôle et des tâches clairement définis ?", "Avez-vous des procédures écrites pour les tâches importantes ?", "Quels outils numériques utilisez-vous (Excel, logiciel, WhatsApp) ?", "Que se passe-t-il quand vous êtes absent(e) ?"]}, {"t": "Méthode GSC : où en est l’entreprise ?", "q": ["Votre offre, votre marché et vos prix sont-ils clairement définis et écrits ?", "Avez-vous un modèle économique écrit : prix, coûts, marge ?", "Comment menez-vous une vente, de la découverte au devis, et mesurez-vous la satisfaction de vos clients ?", "Quelles tâches répétitives pourraient être automatisées ?", "Suivez-vous des chiffres chaque mois pour décider ?", "Comment imaginez-vous votre entreprise sans vous au quotidien, et quelle vision avez-vous à 3 ans ?"]}], "go": ["PME avec équipe ou chiffre d’affaires régulier", "Désordre dans plusieurs domaines à la fois", "Dirigeant impliqué et prêt à ouvrir ses documents", "Besoin d’un plan d’action global", "Budget compatible avec 250 000 FCFA"], "stop": ["Un seul besoin précis (site, réseaux, ventes) : projet ciblé 2, 3 ou 4.", "Simple idée de projet : projet 1 (Création et formalisation d’entreprise).", "Besoin de transformation numérique lourde : projet 8 (Conseil en transformation digitale)."], "apres": ["Envoyer le devis sous 48 h avec la liste des documents à fournir.", "Préparer la grille d’audit avec les premières constatations.", "Planifier la réunion de démarrage avec le responsable administratif.", "Relancer à J+5."]}, "8": {"obj": "Mesurer la maturité numérique de l’entreprise, repérer les tâches à digitaliser en priorité et vérifier que l’infrastructure, l’équipe et le budget permettent un projet de six mois.", "avant": ["Demander la liste des outils et abonnements actuels.", "Regarder le site, les réseaux et les outils visibles du prospect.", "Préparer la grille de maturité digitale (outils, process, équipe, sécurité).", "Prévoir la présence du dirigeant et d’un responsable des opérations."], "temps": [[5, "Accueil et cadre", "Expliquer qu’il s’agit d’un projet de transformation de six mois."], [15, "Outils actuels", "Inventaire des logiciels, du papier, des fichiers, du stockage."], [15, "Processus à digitaliser", "Repérer les tâches longues, répétitives ou source d’erreurs."], [10, "Équipe et culture", "Niveau numérique, résistance au changement, formation."], [5, "Sécurité et budget", "Sauvegardes, mots de passe, budget et sponsor du projet."], [10, "Restitution et suite", "Classer les chantiers par priorité, annoncer le devis."]], "blocs": [{"t": "Outils actuels", "q": ["Quels logiciels ou outils numériques utilisez-vous aujourd’hui ?", "Qu’est-ce qui se fait encore sur papier ou dans Excel ?", "Où sont stockés vos fichiers, et comment sont-ils sauvegardés ?", "Quels abonnements payez-vous chaque mois ?", "Les outils communiquent-ils entre eux ou ressaisissez-vous les données ?", "Qui administre ces outils ?"]}, {"t": "Processus à digitaliser", "q": ["Quelles tâches vous prennent le plus de temps chaque semaine ?", "Comment faites-vous la facturation et le suivi des paiements ?", "Comment gérez-vous les stocks, les commandes ou les rendez-vous ?", "Où se produisent les erreurs ou les oublis ?", "Combien d’heures par semaine pourraient être gagnées selon vous ?", "Comment suivez-vous vos clients (CRM, cahier, WhatsApp) ?"]}, {"t": "Équipe et culture", "q": ["Quel est le niveau d’aisance numérique de votre équipe ?", "Y aura-t-il de la résistance au changement ? De la part de qui ?", "Avez-vous déjà formé votre équipe à de nouveaux outils ?", "Votre connexion internet et votre électricité sont-elles fiables ?", "Avez-vous assez d’ordinateurs ou de téléphones pour toute l’équipe ?"]}, {"t": "Sécurité et budget", "q": ["Comment protégez-vous vos mots de passe et vos données ?", "Avez-vous déjà eu une perte de données ou un piratage ?", "Qui est le responsable du projet côté entreprise ?", "Quel budget mensuel pouvez-vous prévoir pour les outils après le projet ?", "Quelle est la priorité n°1 : gagner du temps, vendre plus ou mieux contrôler ?"]}], "go": ["Entreprise avec plusieurs personnes et des processus répétitifs", "Un dirigeant porteur du projet", "Internet et équipements suffisants", "Budget de 300 000 FCFA, plus les abonnements d’outils", "Équipe prête à être formée"], "stop": ["Base administrative et financière absente : commencer par le projet 7 (Conseil et accompagnement à la performance des PME).", "Très petite activité : projet 1 (Création et formalisation d’entreprise) ou 4 (Création de sites web).", "Besoin limité à un site : projet 4 (Création de sites web professionnels)."], "apres": ["Envoyer le devis sous 48 h, avec la liste des chantiers prioritaires.", "Envoyer la liste des accès et inventaires à préparer.", "Proposer une réunion de cadrage avec le dirigeant et le responsable des opérations.", "Relancer à J+5."]}, "9": {"obj": "Vérifier que l’entreprise a un vrai potentiel (traction prouvée, marché large, équipe engagée) pour être acceptée dans le programme d’accélération, après entretien de sélection, et cerner les besoins en gestion comptable et en recherche de marchés publics à inclure selon le périmètre convenu.", "avant": ["Demander à l’avance : chiffres des 12 derniers mois, présentation de l’entreprise.", "Étudier le marché et les concurrents du prospect.", "Préparer la grille de sélection (traction, marché, équipe, financement).", "Prévoir un second consultant pour avoir un avis croisé.", "Cerner à l’avance les besoins en gestion comptable et en recherche de marchés publics à inclure (selon le périmètre convenu)."], "temps": [[5, "Accueil et cadre", "Préciser que l’entrée est sélective et décidée après l’entretien."], [15, "Traction et chiffres", "Chiffre d’affaires, croissance, clients, preuves de résultats."], [10, "Potentiel et marché", "Taille du marché, avantage, capacité à passer à l’échelle."], [10, "Équipe et capacité", "Équipe fondatrice, temps consacré, capacité d’exécution."], [5, "Comptabilité et marchés publics", "Voir l’état de la comptabilité et l’intérêt pour la recherche de marchés publics, selon le périmètre convenu."], [5, "Financement et engagement", "Besoin d’argent, usage, objectifs mesurables, budget."], [10, "Décision et suite", "Annoncer la procédure de sélection et le délai de réponse."]], "blocs": [{"t": "Traction et chiffres", "q": ["Quel est votre chiffre d’affaires des 12 derniers mois et son évolution ?", "Combien de clients payants avez-vous et depuis quand ?", "Quelle est la croissance mensuelle de vos ventes ?", "Avez-vous des clients récurrents ou des contrats ?", "Quelle est votre marge et votre trésorerie actuelle ?", "Quelle preuve concrète avez-vous que votre modèle fonctionne ?"]}, {"t": "Potentiel et marché", "q": ["Quelle est la taille de votre marché, et dans quelles zones ?", "Qu’est-ce qui vous rend difficile à copier ?", "Votre modèle peut-il servir dix fois plus de clients sans coûts multipliés ?", "Qui sont vos principaux concurrents et que font-ils mieux que vous ?", "Quelle est votre vision à 3 ans ?"]}, {"t": "Équipe et capacité", "q": ["Qui compose l’équipe dirigeante et quel est le rôle de chacun ?", "Êtes-vous à temps plein sur l’entreprise ?", "Quelles compétences clés manquent à l’équipe ?", "Comment prenez-vous les décisions importantes ?", "Quel est votre plus grand risque aujourd’hui ?"]}, {"t": "Financement et engagement", "q": ["Avez-vous besoin d’un financement ? De quel montant et pour quoi faire ?", "Avez-vous déjà rencontré des investisseurs ou des banques ?", "Quels objectifs chiffrés voulez-vous atteindre en 6 mois ?", "Êtes-vous prêt(e) à être challengé(e) et à suivre un rythme soutenu ?", "Le budget de 400 000 FCFA est-il confirmé ?"]}, {"t": "Gestion comptable et marchés publics", "q": ["Qui tient votre comptabilité aujourd’hui, et à quelle fréquence est-elle à jour ?", "Disposez-vous d’états financiers et de documents administratifs à jour pour répondre à des appels d’offres ?", "Avez-vous déjà répondu à un marché public ou à un appel d’offres ? Avec quel résultat ?", "Quels types de marchés publics visez-vous, et dans quels secteurs ?", "Quelle part de la comptabilité et de la recherche de marchés voulez-vous confier à GSC ?"]}], "go": ["Chiffre d’affaires ou traction prouvés", "Équipe dirigeante engagée à temps plein", "Marché large et capacité à passer à l’échelle", "Objectifs de croissance ambitieux et chiffrés", "Ouverture aux critiques et rythme soutenu accepté"], "stop": ["Traction faible : proposer le projet 6 (Coaching stratégique et croissance).", "Entreprise peu structurée : projet 7 (Conseil et accompagnement à la performance des PME) d’abord.", "Simple idée : projet 1 (Création et formalisation d’entreprise)."], "apres": ["Transmettre la grille de sélection remplie au responsable du programme.", "Informer le prospect du délai de décision (sous 5 jours).", "Si accepté : envoyer le devis et planifier la réunion de lancement.", "Si refusé : proposer le projet mieux adapté avec explications."]}}, "C": ["Nom de l’activité et secteur", "Depuis quand l’activité existe (ou idée seulement)", "Nombre de personnes qui travaillent dans l’activité", "Chiffre d’affaires mensuel approximatif", "Comment la personne nous a connus"]};
+var entrP={},guideP=1;
+function gdef(id){return GUIDES.G[String(id)];}
+function entrStart(p){
+  var E=p.entr;
+  if(!E){E=p.entr={proj:0,c:{},a:{},go:{},done:false};}
+  return E;
+}
+function entrPid(p){
+  var E=entrStart(p),id=entrP[p.id]||E.proj||parseInt(p.offreTestee,10)||0;
+  if(!gdef(id)){var rec=p.diag?recommend(p.diag,p.diag.stade):[];id=rec.length?rec[0].p.id:1;}
+  return id;
+}
+function gMethod(id){
+  var g=gdef(id),c=cat(id);
+  return '<div class="panel"><h2>Méthode d’entretien : '+id+'. '+esc(c.name)+'</h2><p><b>Objectif.</b> '+esc(g.obj)+'</p>'+
+   '<div class="grid g2"><div><h3>Avant le rendez-vous</h3><ul class="gl">'+g.avant.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul></div>'+
+   '<div><h3>Déroulé (60 minutes)</h3><table class="tb"><tbody>'+g.temps.map(function(t){return '<tr><td style="width:62px;white-space:nowrap"><b>'+t[0]+' min</b></td><td><b>'+esc(t[1])+'</b><br><span class="small muted">'+esc(t[2])+'</span></td></tr>';}).join('')+'</tbody></table></div></div></div>';
+}
+function gAfter(id){
+  var g=gdef(id);
+  return '<div class="panel"><h3>Si le projet ne convient pas</h3><ul class="gl">'+g.stop.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul><h3>Après l’entretien</h3><ul class="gl">'+g.apres.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul></div>';
+}
+function entrScore(id,go){
+  var g=gdef(id),n=0;g.go.forEach(function(_,i){if(go&&go[i])n++;});
+  var t=g.go.length,pct=Math.round(n/t*100),lab,cls;
+  if(n===0){lab='Cochez les critères confirmés pendant l’entretien.';cls='';}
+  else if(pct>=80){lab='Projet adapté : préparer le devis.';cls='st-5';}
+  else if(pct>=50){lab='À confirmer : vérifier les critères manquants avant le devis.';cls='st-2';}
+  else{lab='Peu adapté : voir « Si le projet ne convient pas » ci-dessous.';cls='st-4';}
+  return '<p><span class="tag '+cls+'">'+n+' / '+t+' critères</span> '+esc(lab)+'</p>';
+}
+function entrView(p){
+  var E=entrStart(p),id=entrPid(p),a=E.a[id]||{},go=E.go[id]||{},g=gdef(id);
+  var sel='<div class="panel noprint"><label for="ep">Projet pour lequel le prospect passe le diagnostic</label><select id="ep" data-entrp style="max-width:420px">'+CATALOG.map(function(c){return '<option value="'+c.id+'"'+(c.id===id?' selected':'')+'>'+c.id+'. '+esc(c.name)+'</option>';}).join('')+'</select><p class="small muted" style="margin:6px 0 0">Chaque projet a sa propre méthode et ses propres questions. Vos réponses sont enregistrées automatiquement.</p></div>';
+  var common='<div class="panel"><h3>Faits de base</h3>'+GUIDES.C.map(function(q,i){return '<div class="fld"><label for="c'+i+'">'+esc(q)+'</label><input id="c'+i+'" name="c_'+i+'" value="'+esc(E.c[i]||'')+'"></div>';}).join('')+'</div>';
+  var qs=g.blocs.map(function(b,bi){return '<div class="panel"><h3>'+(bi+1)+'. '+esc(b.t)+'</h3>'+b.q.map(function(q,qi){var k=bi+'_'+qi;return '<div class="fld"><label for="q'+k+'">'+esc(q)+'</label><textarea id="q'+k+'" name="q_'+k+'" style="min-height:56px">'+esc(a[k]||'')+'</textarea></div>';}).join('')+'</div>';}).join('');
+  var crit='<div class="panel"><h3>Ce projet convient-il ?</h3><p class="small muted">Cochez ce qui est confirmé par les réponses.</p>'+g.go.map(function(x,i){return '<label class="qopt"><input type="checkbox" name="go_'+i+'"'+(go[i]?' checked':'')+'><span class="n">'+esc(x)+'</span></label>';}).join('')+'<div id="entrres">'+entrScore(id,go)+'</div></div>';
+  return sel+'<form data-form="entr" data-id="'+p.id+'" data-pid="'+id+'" novalidate>'+gMethod(id)+common+qs+crit+gAfter(id)+
+   '<div class="row noprint"><button class="btn" type="submit">Enregistrer</button><button class="btn ok" type="button" data-act="entr-end">Terminer l’entretien</button><button class="btn dark" type="button" data-act="entr-devis">Préparer le devis pour ce projet →</button><button class="btn line" type="button" data-act="entr-print">Imprimer la fiche</button></div>'+(E.done?'<p class="small muted">Entretien terminé le '+fdate(E.date)+'.</p>':'')+'</form>';
+}
+function entrRead(f){
+  var p=getP(f.dataset.id),id=parseInt(f.dataset.pid,10),E=entrStart(p),a={},go={},g=gdef(id);
+  $$('textarea[name^="q_"]',f).forEach(function(t){var v=t.value.trim();if(v)a[t.name.slice(2)]=v;});
+  $$('input[name^="c_"]',f).forEach(function(t){var v=t.value.trim(),i=t.name.slice(2);if(v)E.c[i]=v;else delete E.c[i];});
+  g.go.forEach(function(_,i){var c=f.elements['go_'+i];if(c&&c.checked)go[i]=true;});
+  E.proj=id;E.a[id]=a;E.go[id]=go;
+  return {p:p,id:id,E:E,go:go};
+}
+function entrSave(f,quiet){
+  var r=entrRead(f);r.E.date=today();
+  if(!r.p.offreTestee)r.p.offreTestee=String(r.id);
+  save();
+  var res=$('#entrres');if(res)res.innerHTML=entrScore(r.id,r.go);
+  if(!quiet)toast('Entretien enregistré.');
+  return r;
+}
+function entrAct(a,el){
+  var f=el.closest('form');if(!f)return;
+  var r=entrSave(f,true),p=r.p,id=r.id;
+  if(a==='entr-end'){
+    if(stIdx(p.statut)<2)setStatut(p,'Diagnostic réalisé');
+    r.E.done=true;r.E.date=today();
+    p.prochaineAction='Envoyer le devis (sous 48 h)';p.dateProchaineAction=addDays(today(),2);
+    p.offreTestee=String(id);
+    addHist(p,'Entretien de diagnostic terminé : '+cat(id).name+' ('+Object.keys(r.go).length+'/'+gdef(id).go.length+' critères)');
+    save();toast('Entretien terminé. Prochaine étape : le devis.');render();
+  }else if(a==='entr-devis'){
+    p.offreTestee=String(id);save();
+    DV={pid:p.id,sel:[id],o:{},notes:''};
+    location.hash='#/p/'+p.id+'/devis';
+  }else if(a==='entr-print'){
+    entrSheet(p,id);
+  }
+}
+function entrSheet(p,id){
+  var E=p?entrStart(p):{c:{},a:{},go:{}},g=gdef(id),a=(p&&E.a[id])||{},c=cat(id);
+  var h='<div class="sheet"><header><div><h2>FICHE D’ENTRETIEN DE DIAGNOSTIC</h2><div>Projet : <b>'+id+'. '+esc(c.name)+'</b><br>'+(p?'Prospect : <b>'+esc(p.nom)+'</b>'+(p.entreprise?' · '+esc(p.entreprise):'')+'<br>':'')+'Date : '+(p?fdate(E.date||today()):'……………………')+'</div></div><div style="text-align:right"><img src="'+LOGO_L+'" alt="GSC Business Center"></div></header>'+
+   '<p><b>Objectif.</b> '+esc(g.obj)+'</p><table><thead><tr><th>Durée</th><th>Étape</th></tr></thead><tbody>'+g.temps.map(function(t){return '<tr><td>'+t[0]+' min</td><td><b>'+esc(t[1])+'</b> · '+esc(t[2])+'</td></tr>';}).join('')+'</tbody></table>'+
+   '<h3>Faits de base</h3>'+GUIDES.C.map(function(q,i){return '<div class="qa"><b>'+esc(q)+'</b><div class="ans">'+esc(p&&E.c[i]||'')+'</div></div>';}).join('');
+  g.blocs.forEach(function(b,bi){h+='<h3>'+(bi+1)+'. '+esc(b.t)+'</h3>'+b.q.map(function(q,qi){return '<div class="qa"><b>'+esc(q)+'</b><div class="ans">'+esc(p&&a[bi+'_'+qi]||'').replace(/\n/g,'<br>')+'</div></div>';}).join('');});
+  h+='<h3>Ce projet convient-il ?</h3><ul class="gl">'+g.go.map(function(x,i){return '<li>'+((p&&(E.go[id]||{})[i])?'☑':'☐')+' '+esc(x)+'</li>';}).join('')+'</ul><p class="fine">Décision : ☐ Projet adapté ☐ À confirmer ☐ Orienter vers : …………………………</p></div>';
+  $('#modal').innerHTML='<div class="modal" role="dialog" aria-modal="true" aria-label="Fiche d’entretien"><div class="box"><div class="bar2 noprint"><button class="btn" data-act="dv-print">Imprimer / PDF</button><button class="btn line" data-act="close-modal">Fermer</button></div>'+h+'</div></div>';
+}
+/* page « Guides d'entretien » (consultation, sans prospect) */
+function viewGuides(r){
+  var id=parseInt(r.id,10)||guideP;if(!gdef(id))id=1;guideP=id;
+  var tabs='<nav class="tabs" aria-label="Projets">'+CATALOG.map(function(c){return '<a href="#/guides/'+c.id+'"'+(c.id===id?' aria-current="page"':'')+'>'+c.id+'. '+esc(c.name)+'</a>';}).join('')+'</nav>';
+  var g=gdef(id);
+  return '<div class="top"><h1>Guides d’entretien de diagnostic</h1><div class="acts"><button class="btn line" data-act="guide-print" data-id="'+id+'">Imprimer la fiche vierge</button></div></div><p class="muted">À utiliser quand le prospect a pris rendez-vous. Un guide par projet : méthode, questions, critères et suite.</p>'+tabs+gMethod(id)+
+   '<div class="panel"><h3>Faits de base (pour tous les projets)</h3><ul class="gl">'+GUIDES.C.map(function(q){return '<li>'+esc(q)+'</li>';}).join('')+'</ul></div>'+
+   g.blocs.map(function(b,bi){return '<div class="panel"><h3>'+(bi+1)+'. '+esc(b.t)+'</h3><ol class="gl">'+b.q.map(function(q){return '<li>'+esc(q)+'</li>';}).join('')+'</ol></div>';}).join('')+
+   '<div class="panel"><h3>Ce projet convient si…</h3><ul class="gl">'+g.go.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul></div>'+gAfter(id);
+}
+/* ---------- rapport de diagnostic pour le client ---------- */
+var NLIB={
+ strat:{m:'Vous avancez sans plan écrit : pas d’objectif chiffré, pas de priorités claires.',p:'Vous avez des idées et un début de plan, mais il n’est pas écrit, chiffré ni suivi.',c:'On se disperse, on décide au jour le jour et on laisse passer les occasions qui comptent.',a:['Écrire sur une page : votre offre, votre cible et votre objectif chiffré à 6 mois.','Fixer 3 priorités par trimestre et les chiffres qui permettent de les suivre.','Faire un point mensuel d’une heure pour ajuster le plan.'],f:'Votre vision et votre plan sont clairs : c’est une vraie base pour avancer.'},
+ vente:{m:'Vous n’avez pas encore de façon régulière de trouver des clients ni de conclure les ventes.',p:'Des clients viennent, mais surtout par hasard ou par le bouche-à-oreille, et le suivi des ventes n’est pas structuré.',c:'Un chiffre d’affaires irrégulier, une dépendance à quelques clients et des devis perdus faute de suivi.',a:['Définir votre client idéal et une offre phare avec un prix clair.','Mettre en place un suivi des prospects avec une relance sous 5 jours.','Choisir un canal principal pour trouver des clients et s’y tenir 90 jours.'],f:'Vous savez attirer et convaincre vos clients : c’est à protéger et à développer.'},
+ outils:{m:'Peu ou pas d’outils numériques : tout passe par le papier, la mémoire ou le téléphone.',p:'Quelques outils sont utilisés, mais ils sont éparpillés et peu reliés entre eux.',c:'Du temps perdu, des erreurs, des informations introuvables et une image moins professionnelle.',a:['Lister les tâches répétitives et en choisir deux à automatiser.','Centraliser contacts, devis et documents dans un seul outil.','Mettre en ligne une présence professionnelle (site ou page) avec contact et paiement.'],f:'Vos outils vous font gagner du temps : continuez à les utiliser et à les relier.'},
+ gestion:{m:'Il n’y a pas de suivi régulier des chiffres, des tâches et de l’organisation.',p:'Une organisation de base existe, mais sans procédures écrites ni suivi régulier.',c:'Une trésorerie tendue, des retards, des oublis, et une entreprise qui dépend entièrement de vous.',a:['Séparer les comptes personnels et professionnels, et suivre entrées et dépenses chaque semaine.','Écrire les 3 procédures clés : vente, livraison, facturation.','Suivre un tableau de bord mensuel de 5 chiffres.'],f:'Votre organisation tient : elle vous permet d’absorber la croissance.'},
+ equipe:{m:'Il n’y a pas d’équipe structurée, ou les rôles et le style de direction restent flous.',p:'Une équipe existe, mais les rôles, la délégation et la communication sont à renforcer.',c:'Le dirigeant fait tout, l’équipe n’est pas pleinement engagée et la qualité du travail varie.',a:['Définir le rôle et les objectifs de chaque personne.','Déléguer 3 tâches clés avec des consignes écrites.','Organiser un point d’équipe court chaque semaine.'],f:'Votre équipe et votre leadership sont un vrai atout pour grandir.'},
+ fin:{m:'Il n’y a pas de plan financier ni d’accès identifié à un financement.',p:'Vous avez une idée des besoins, mais pas de prévisions chiffrées ni de dossier prêt.',c:'Impossible d’investir au bon moment, et un risque de manquer d’argent.',a:['Chiffrer vos coûts, vos ventes prévues et votre point d’équilibre.','Préparer un dossier de financement simple : présentation, chiffres, besoin.','Identifier deux sources possibles (banque, microfinance, programme, partenaire) et les contacter.'],f:'Vos finances sont maîtrisées : vous pouvez investir avec confiance.'}
+};
+var NIVTXT={'Démarrage':'Votre entreprise en est au tout début : l’essentiel est de poser des bases solides avant d’accélérer.','Structuration':'Les bases existent mais manquent de solidité : structurer vous donnera de la régularité et de la confiance.','Développement':'Votre entreprise fonctionne : il reste quelques freins à lever pour croître plus vite.','Accélération':'Votre entreprise est solide : vous pouvez viser une croissance plus rapide.'};
+var RPCOL=['#B3261E','#B26A00','#1B7A4B'];
+function needName(k){return NEEDS.filter(function(x){return x[0]===k;})[0][1];}
+function rpData(p){
+  var dg=p.diag;if(!dg||!diagScore(dg))return null;
+  var sc=diagScore(dg),R=p.rapport||{},bl=[],fo=[];
+  NEEDS.forEach(function(x){var v=dg.needs[x[0]];if(v===''||v==null)return;v=parseInt(v,10);if(v===0)bl.push({k:x[0],v:0});else if(v===1)bl.push({k:x[0],v:1});else fo.push({k:x[0],v:2});});
+  bl.sort(function(a,b){return a.v-b.v;});
+  var rec=recommend(dg,dg.stade),pid=parseInt(R.proj,10)||parseInt(p.offreTestee,10)||(rec[0]&&rec[0].p.id)||0;
+  if(!cat(pid))pid=rec[0]?rec[0].p.id:0;
+  var last=(p.devis||[]).length?p.devis[p.devis.length-1]:null;
+  return {dg:dg,sc:sc,bl:bl,fo:fo,rec:rec,pid:pid,last:last,mot:(R.mot!==undefined&&R.mot!==null&&R.mot!==''?R.mot:(dg.resume||''))};
+}
+function rpText(p,D){
+  var top=D.bl.slice(0,3).map(function(b,i){return (i+1)+') '+needName(b.k);}).join(' ; ');
+  var pr=D.pid?cat(D.pid):null;
+  return 'Bonjour '+p.nom+',\n\nMerci pour notre échange. Voici le résumé de votre diagnostic GSC Business Center.\n\nMaturité de votre entreprise : '+D.sc.score+' / 100 ('+D.sc.label+').\n'+(top?'Vos principaux blocages à lever : '+top+'.\n':'Aucun blocage majeur détecté.\n')+(pr?'Projet conseillé : '+pr.id+'. '+pr.name+' ('+pTxt(pr,pr.price)+', '+pr.dur+').\n':'')+'\nLe rapport complet est joint à ce message. Pour avancer, répondez simplement OK : nous planifions le démarrage.\n\n'+(S.settings.phone||'')+' · '+(S.settings.email||'');
+}
+function rpSheet(p,D){
+  var dg=D.dg,pr=D.pid?cat(D.pid):null,H='';
+  H+='<div class="sheet rp"><header><div><h2>RAPPORT DE DIAGNOSTIC</h2><div>Établi le <b>'+fdate(dg.date||today())+'</b><br>Pour : <b>'+esc(p.nom)+'</b>'+(p.entreprise?' · '+esc(p.entreprise):'')+'<br>Consultant : '+esc(p.consultant||'')+'</div></div><div style="text-align:right"><img src="'+LOGO_L+'" alt="GSC Business Center"><div style="font-size:12px;margin-top:6px">'+esc(S.settings.phone)+'<br>'+esc(S.settings.email)+'</div></div></header>';
+  H+='<p style="font-size:1.05rem"><b>Voici ce qui freine aujourd’hui votre décollage, et comment le lever pas à pas.</b></p>';
+  H+='<div class="rp-top"><div class="rp-score"><b>'+D.sc.score+'<small> / 100</small></b><span>Maturité de votre entreprise</span><em>'+esc(D.sc.label)+'</em></div><p>'+esc(NIVTXT[D.sc.label]||'')+'</p></div>';
+  var said=[];if(dg.stade)said.push(['Stade de votre entreprise',dg.stade]);if(dg.idee)said.push(['Votre activité et le problème que vous résolvez',dg.idee]);if(dg.cible)said.push(['Vos clients et votre offre',dg.cible]);if(dg.objectif)said.push(['Votre objectif à 6 mois',dg.objectif]);
+  if(said.length)H+='<h3>1. Ce que vous nous avez dit</h3><table><tbody>'+said.map(function(x){return '<tr><td style="width:34%"><b>'+esc(x[0])+'</b></td><td>'+esc(x[1]).replace(/\n/g,'<br>')+'</td></tr>';}).join('')+'</tbody></table>';
+  H+='<h3>2. Vue d’ensemble de votre entreprise</h3><div class="rpb">'+NEEDS.map(function(x){var v=dg.needs[x[0]];if(v===''||v==null)return '';v=parseInt(v,10);return '<div class="rpr"><span>'+esc(x[1])+'</span><i><b style="width:'+(v===0?6:v*50)+'%;background:'+RPCOL[v]+'"></b></i><em style="color:'+RPCOL[v]+'">'+LV[v]+'</em></div>';}).join('')+'</div>';
+  H+='<h3>3. Vos blocages à lever en priorité</h3>';
+  if(!D.bl.length)H+='<p>Bonne nouvelle : tous les points évalués sont acquis. L’enjeu est maintenant d’accélérer.</p>';
+  D.bl.forEach(function(b,i){var L=NLIB[b.k],note=(dg.notes||{})[b.k];
+    H+='<div class="rpk" style="border-left-color:'+RPCOL[b.v]+'"><b>Priorité '+(i+1)+' · '+esc(needName(b.k))+' <span style="color:'+RPCOL[b.v]+'">('+LV[b.v]+')</span></b><p><u>Constat.</u> '+esc(b.v===0?L.m:L.p)+'</p>'+(note?'<p><u>Notre remarque.</u> '+esc(note)+'</p>':'')+'<p><u>Ce que cela vous coûte.</u> '+esc(L.c)+'</p><p><u>Premier pas.</u> '+esc(L.a[0])+'</p></div>';});
+  if(D.fo.length)H+='<h3>4. Vos points forts</h3><ul>'+D.fo.map(function(f){return '<li><b>'+esc(needName(f.k))+' :</b> '+esc(NLIB[f.k].f)+'</li>';}).join('')+'</ul>';
+  var top3=D.bl.slice(0,3);
+  if(top3.length){
+    H+='<h3>'+(D.fo.length?'5':'4')+'. Votre plan d’action sur 90 jours</h3><table><thead><tr><th style="width:16%">Période</th><th>Actions à mener</th></tr></thead><tbody>'+['Dans les 30 jours','Dans les 60 jours','Dans les 90 jours'].map(function(t,i){return '<tr><td><b>'+t+'</b></td><td>'+top3.map(function(b){return '<div style="margin-bottom:4px">• <i>'+esc(needName(b.k))+' :</i> '+esc(NLIB[b.k].a[i])+'</div>';}).join('')+'</td></tr>';}).join('')+'</tbody></table>';
+  }
+  var n=3+(D.fo.length?1:0)+(top3.length?1:0)+1;
+  if(pr){
+    var cov=pr.needs.filter(function(k){return D.bl.some(function(b){return b.k===k;});}).map(needName);
+    H+='<h3>'+n+'. Le projet que nous vous conseillons</h3><div class="rpk" style="border-left-color:#E6007E"><b>'+pr.id+'. '+esc(pr.name)+'</b><p>'+esc(pr['for'])+'</p>'+(cov.length?'<p><u>Il traite vos blocages :</u> '+esc(cov.join(', '))+'.</p>':'')+'<p><u>Durée maximale :</u> '+esc(pr.dur)+' · <u>Investissement :</u> <b>'+pTxt(pr,pr.price)+'</b>'+(D.last?' (votre devis détaillé '+esc(D.last.num)+' vous est envoyé séparément)':'')+'</p><p class="small">Chaque projet est découpé en étapes, avec un livrable à la fin de chacune. Paiement possible en 3 tranches.</p></div>';
+    var oth=D.rec.filter(function(r){return r.p.id!==pr.id;});
+    if(oth.length)H+='<p class="small">Autres options étudiées : '+oth.map(function(r){return esc(r.p.id+'. '+r.p.name);}).join(' · ')+'.</p>';
+    n++;
+  }
+  if(D.mot)H+='<h3>'+n+'. Le mot de votre consultant</h3><p style="white-space:pre-wrap">'+esc(D.mot)+'</p>';
+  H+='<div class="rpk" style="border-left-color:#29235C;margin-top:18px"><b>Et maintenant ?</b><p>Répondez simplement <b>OK</b> à ce message pour confirmer. Nous planifions la réunion de démarrage dans les 3 jours.'+(S.settings.rdv?'<br>Pour échanger d’abord : '+esc(S.settings.rdv):'')+'</p></div>';
+  H+='<p class="fine">Ce rapport est établi à partir de l’entretien de diagnostic et de vos déclarations. Il est confidentiel et destiné à '+esc(p.nom)+'.<br>'+esc(S.settings.legal)+'</p></div>';
+  return H;
+}
+function rapportView(p){
+  var D=rpData(p);
+  if(!D)return '<div class="panel"><h2>Rapport de diagnostic</h2><p class="muted">Réalisez d’abord le diagnostic (onglet Diagnostic) : évaluez les 6 besoins, puis revenez ici pour générer le rapport à envoyer au client.</p><a class="btn" href="#/p/'+p.id+'/diag">Aller au diagnostic</a></div>';
+  var R=p.rapport||{};
+  return '<form data-form="rapport" data-id="'+p.id+'" class="panel noprint" novalidate><h2>Rapport à envoyer au client</h2><p class="muted small">Le rapport se remplit tout seul avec le diagnostic et l’entretien. Ajoutez votre mot personnel, choisissez le projet conseillé, puis imprimez-le en PDF et envoyez-le.</p><div class="grid g2"><div class="fld"><label for="rp-proj">Projet conseillé</label><select id="rp-proj" name="proj">'+CATALOG.map(function(c){return '<option value="'+c.id+'"'+(c.id===D.pid?' selected':'')+'>'+c.id+'. '+esc(c.name)+'</option>';}).join('')+'</select></div></div><div class="fld"><label for="rp-mot">Mot personnel du consultant (facultatif)</label><textarea id="rp-mot" name="mot" placeholder="Ex. : Votre projet a un vrai potentiel. Votre priorité absolue est…">'+esc(D.mot)+'</textarea></div><div class="row"><button class="btn" type="button" data-act="rp-open">Voir, imprimer en PDF et envoyer</button>'+(R.sent?'<span class="small muted">Dernier envoi : '+fdate(R.sent)+'</span>':'')+'</div></form>'+rpSheet(p,D).replace('<div class="sheet rp">','<div class="panel"><div class="sheet rp">')+'</div>';
+}
+function rpSave(f){
+  var p=getP(f.dataset.id);if(!p)return;
+  var R=p.rapport=p.rapport||{};R.proj=f.elements.proj.value;R.mot=f.elements.mot.value.trim();
+  if(!R.mot)R.mot='';
+  save();
+}
+function rpOpen(p){
+  var D=rpData(p);if(!D)return;
+  var txt=rpText(p,D),wa=waLink(p,txt);
+  $('#modal').innerHTML='<div class="modal" role="dialog" aria-modal="true" aria-label="Rapport de diagnostic"><div class="box"><div class="bar2 noprint"><button class="btn" data-act="dv-print">Imprimer / enregistrer en PDF</button>'+(wa?'<a class="btn ok" target="_blank" rel="noopener" data-act="rp-sent" data-pid="'+p.id+'" href="'+esc(wa)+'">Envoyer par WhatsApp</a>':'')+(validEmail(p.email)?'<a class="btn dark" data-act="rp-sent" data-pid="'+p.id+'" href="mailto:'+esc(p.email)+'?subject='+encodeURIComponent('Votre rapport de diagnostic – GSC Business Center')+'&body='+encodeURIComponent(txt)+'">Envoyer par e-mail</a>':'')+'<button class="btn line" data-copy="'+esc(txt)+'">Copier le message</button><button class="btn line" data-act="close-modal">Fermer</button></div><p class="small muted noprint">Astuce : cliquez sur « Imprimer », choisissez « Enregistrer au format PDF », puis joignez le PDF au message WhatsApp ou à l’e-mail.</p>'+rpSheet(p,D)+'</div></div>';
+}
+function rapportAct(a,el){
+  if(a==='rp-open'){var f=el.closest('form'),p=getP(f.dataset.id);rpSave(f);rpOpen(p);}
+  else if(a==='rp-sent'){var q=getP(el.dataset.pid);if(q){(q.rapport=q.rapport||{}).sent=today();addHist(q,'Rapport de diagnostic envoyé');if(stIdx(q.statut)<2)setStatut(q,'Diagnostic réalisé');save();toast('Envoi enregistré dans l’historique.');}}
+}
+/* ---------- factures (créées quand un devis est accepté) ---------- */
+var FU=['zéro','un','deux','trois','quatre','cinq','six','sept','huit','neuf','dix','onze','douze','treize','quatorze','quinze','seize','dix-sept','dix-huit','dix-neuf'],FT=['','','vingt','trente','quarante','cinquante','soixante'];
+function fb100(n,pl){
+  if(n<20)return FU[n];
+  if(n<70){var t=Math.floor(n/10),u=n%10;return FT[t]+(u===1?' et un':u?'-'+FU[u]:'');}
+  if(n<80)return 'soixante'+(n===71?' et onze':'-'+FU[n-60]);
+  if(n===80)return 'quatre-vingt'+(pl?'s':'');
+  return 'quatre-vingt-'+FU[n-80];
+}
+function fcnt(n,pl){
+  var h=Math.floor(n/100),r=n%100,s='';
+  if(h)s=(h===1?'cent':FU[h]+' cent')+(h>1&&r===0&&pl?'s':'');
+  if(r)s+=(h?' ':'')+fb100(r,pl);
+  return s;
+}
+function nwords(n){
+  n=Math.round(n);if(n===0)return 'zéro';
+  var b=Math.floor(n/1e9),m=Math.floor(n%1e9/1e6),k=Math.floor(n%1e6/1e3),r=n%1000,s='';
+  if(b)s+=fcnt(b,true)+' milliard'+(b>1?'s':'')+' ';
+  if(m)s+=fcnt(m,true)+' million'+(m>1?'s':'')+' ';
+  if(k)s+=(k===1?'':fcnt(k,false)+' ')+'mille ';
+  if(r)s+=fcnt(r,true);
+  return s.trim();
+}
+function tvaCfg(){var s=S.settings,on=s.tvaOn!=='non',r=on?(parseFloat(s.tvaRate)||0):0;return {on:on&&r>0,rate:r,mode:s.tvaMode==='ttc'?'ttc':'ht'};}
+function taxSplit(amount,cfg){
+  amount=Math.round(amount);
+  if(!cfg.on)return {ht:amount,tva:0,ttc:amount};
+  if(cfg.mode==='ttc'){var ht=Math.round(amount/(1+cfg.rate/100));return {ht:ht,tva:amount-ht,ttc:amount};}
+  var t=Math.round(amount*cfg.rate/100);return {ht:amount,tva:t,ttc:amount+t};
+}
+function planInt(ttc,comptant){
+  if(comptant)return [['Paiement comptant à la signature',ttc]];
+  var a=Math.round(ttc*0.4),b=Math.round(ttc*0.3);
+  return [['Acompte à la signature (40 %)',a],['Milieu du projet (30 %), après le livrable intermédiaire',b],['Solde à la livraison (30 %)',ttc-a-b]];
+}
+function sellerOk(){return !!(String(S.settings.ninea||'').trim()&&String(S.settings.rccm||'').trim());}
+function makeFacture(p,d){
+  var s=S.settings,cfg=tvaCfg();
+  if(!sellerOk())return {err:'ninea'};
+  if((p.factures||[]).some(function(f){return f.devisNum===d.num;}))return {err:'dup'};
+  var sp=taxSplit(d.calc.net,cfg),mo=taxSplit(d.calc.monthTotal||0,cfg),hasF=d.items.some(function(i){return !i.monthly;});
+  var plan=hasF?planInt(sp.ttc,d.o&&d.o.comptant):[];
+  var y=new Date().getFullYear(),num='FAC-'+y+'-'+pad(s.facNum||1,3);
+  s.facNum=(s.facNum||1)+1;
+  var f={num:num,date:today(),devisNum:d.num,items:JSON.parse(JSON.stringify(d.items)),calc:JSON.parse(JSON.stringify(d.calc)),comptant:!!(d.o&&d.o.comptant),
+    tva:{on:cfg.on,rate:cfg.rate,mode:cfg.mode},ht:sp.ht,tvaAmt:sp.tva,ttc:sp.ttc,mo:mo,plan:plan.map(function(x){return [x[0],x[1]];}),paid:plan.map(function(){return false;}),
+    seller:{nom:s.raison||'GSC Business Center',adresse:s.adresse||'',ninea:s.ninea,rccm:s.rccm,phone:s.phone,email:s.email,payInfo:s.payInfo||''},statut:'émise'};
+  (p.factures=p.factures||[]).push(f);
+  addHist(p,'Facture '+num+' générée ('+fmt(f.ttc)+' FCFA'+(cfg.on?' TTC':'')+')');
+  return {f:f};
+}
+function autoFacture(p,d){
+  var r=makeFacture(p,d);
+  if(r.err==='ninea'){toast('Devis accepté. Pour générer la facture, renseignez le NINEA et le RCCM dans Paramètres.');return null;}
+  if(r.err==='dup')return null;
+  return r.f;
+}
+function fStatut(f){var n=f.paid.filter(Boolean).length;return !f.paid.length?f.statut:n===0?'émise':n===f.paid.length?'payée':'partiellement payée';}
+function fPaidAmt(f){var t=0;f.plan.forEach(function(x,i){if(f.paid[i])t+=x[1];});return t;}
+function fTag(f){var s=fStatut(f),c=s==='payée'?'st-5':s==='émise'?'st-3':'st-2';return '<span class="tag '+c+'">'+s+'</span>';}
+function factureSheet(p,f){
+  var S0=f.seller,fo=f.items.filter(function(i){return !i.monthly;}),tv=f.tva;
+  var h='<div class="sheet"><header><div><h2>FACTURE '+esc(f.num)+'</h2><div>Date : '+fdate(f.date)+'<br>Réf. devis : '+esc(f.devisNum)+'</div></div><div style="text-align:right"><img src="'+LOGO_L+'" alt="GSC Business Center"></div></header>'+
+   '<div class="grid g2" style="margin-bottom:10px"><div><b>'+esc(S0.nom)+'</b><br>'+esc(S0.adresse)+'<br>Tél. : '+esc(S0.phone)+' · '+esc(S0.email)+'<br><b>NINEA :</b> '+esc(S0.ninea)+'<br><b>RCCM :</b> '+esc(S0.rccm)+'<br><b>TVA :</b> '+(tv.on?'assujetti, taux '+tv.rate+' %':'non applicable')+'</div>'+
+   '<div style="border:1px solid #ccc;border-radius:6px;padding:8px 12px"><span style="font-size:12px;color:#555">FACTURÉ À</span><br><b>'+esc(p.nom)+'</b>'+(p.entreprise?'<br>'+esc(p.entreprise):'')+(p.telephone?'<br>'+esc(p.telephone):'')+(p.email?'<br>'+esc(p.email):'')+'</div></div>'+
+   '<table><thead><tr><th>Désignation</th><th>Durée max.</th><th class="r">Montant'+(tv.on&&tv.mode==='ht'?' HT':tv.on?' TTC':'')+' (FCFA)</th></tr></thead><tbody>'+f.items.map(function(i){return '<tr><td>'+i.id+'. '+esc(i.name)+'</td><td>'+esc(i.dur)+'</td><td class="r">'+fmt(i.price)+(i.monthly?' / mois':'')+'</td></tr>';}).join('')+'</tbody></table>';
+  if(fo.length){
+    h+='<table><tbody>'+(f.calc.maj?'<tr><td>Total au forfait</td><td class="r">'+fmt(f.calc.list)+'</td></tr><tr><td>Formule renforcée (+25 %)</td><td class="r">+ '+fmt(f.calc.maj)+'</td></tr>':'')+(f.calc.rate?'<tr><td>Remises ('+f.calc.rate+' %)</td><td class="r">− '+fmt(f.calc.rem)+'</td></tr>':'')+
+     '<tr><td><b>TOTAL HORS TAXE</b></td><td class="r"><b>'+fmt(f.ht)+'</b></td></tr>'+(tv.on?'<tr><td>TVA '+tv.rate+' %</td><td class="r">'+fmt(f.tvaAmt)+'</td></tr>':'<tr><td>TVA</td><td class="r">non applicable</td></tr>')+'<tr class="tot"><td>TOTAL TTC À PAYER</td><td class="r">'+fmt(f.ttc)+' FCFA</td></tr></tbody></table>';
+    h+='<p>Arrêtée la présente facture à la somme de : <b>'+esc(nwords(f.ttc))+' francs CFA</b>.</p>';
+    h+='<p><b>Modalités de paiement</b></p><table><tbody>'+f.plan.map(function(x,i){return '<tr><td>'+esc(x[0])+'</td><td class="r">'+fmt(x[1])+' FCFA</td><td class="r">'+(f.paid[i]?'✔ payé':'à payer')+'</td></tr>';}).join('')+'</tbody></table>';
+  }
+  if(f.calc.monthTotal)h+='<p>Services facturés chaque mois : <b>'+fmt(f.mo.ht)+' FCFA HT'+(tv.on?' + TVA '+fmt(f.mo.tva)+' = '+fmt(f.mo.ttc)+' FCFA TTC':'')+' / mois</b>.</p>';
+  if(S0.payInfo)h+='<p><b>Règlement :</b> '+esc(S0.payInfo).replace(/\n/g,'<br>')+'</p>';
+  h+='<div class="sig"><div>Pour le client (bon pour accord)</div><div>Pour '+esc(S0.nom)+'<br>'+esc(p.consultant||'')+'</div></div><p class="fine">'+esc(S0.nom)+' · NINEA '+esc(S0.ninea)+' · RCCM '+esc(S0.rccm)+(tv.on?' · TVA '+tv.rate+' %':' · TVA non applicable')+'</p></div>';
+  return h;
+}
+function factureText(p,f){
+  return 'Bonjour '+p.nom+',\n\nVoici votre facture '+f.num+' (devis '+f.devisNum+') : '+fmt(f.ttc)+' FCFA'+(f.tva.on?' TTC (dont TVA '+f.tva.rate+' % : '+fmt(f.tvaAmt)+')':'')+'.\n'+f.plan.map(function(x){return x[0]+' : '+fmt(x[1])+' FCFA';}).join('\n')+(f.seller.payInfo?'\n\nRèglement : '+f.seller.payInfo:'')+'\n\nLa facture complète est jointe. Merci de votre confiance !\n\n'+(S.settings.phone||'')+' · '+(S.settings.email||'');
+}
+function openFacture(pid,num){
+  var p=getP(pid),f=(p.factures||[]).filter(function(x){return x.num===num;})[0];if(!f)return;
+  var txt=factureText(p,f),wa=waLink(p,txt);
+  $('#modal').innerHTML='<div class="modal" role="dialog" aria-modal="true" aria-label="Facture '+esc(num)+'"><div class="box"><div class="bar2 noprint"><button class="btn" data-act="dv-print">Imprimer / PDF</button>'+(wa?'<a class="btn ok" target="_blank" rel="noopener" href="'+esc(wa)+'">Envoyer par WhatsApp</a>':'')+(validEmail(p.email)?'<a class="btn dark" href="mailto:'+esc(p.email)+'?subject='+encodeURIComponent('Votre facture '+num+' – GSC Business Center')+'&body='+encodeURIComponent(txt)+'">Envoyer par e-mail</a>':'')+'<button class="btn line" data-copy="'+esc(txt)+'">Copier le texte</button><button class="btn line" data-act="close-modal">Fermer</button></div>'+factureSheet(p,f)+'</div></div>';
+}
+function facturesView(p){
+  var L=(p.factures||[]).slice().reverse();
+  var acc=(p.devis||[]).filter(function(d){return d.statut==='accepté'&&!(p.factures||[]).some(function(f){return f.devisNum===d.num;});});
+  return (sellerOk()?'':'<div class="panel"><p class="late">NINEA et RCCM non renseignés : la facture ne peut pas être générée.</p><a class="btn" href="#/params">Compléter dans Paramètres</a></div>')+
+   (acc.length?'<div class="panel"><h2>Devis acceptés sans facture</h2>'+acc.map(function(d){return '<div class="row card" style="justify-content:space-between"><span><b>'+esc(d.num)+'</b> · '+fmt(d.calc.net)+' FCFA</span><button class="btn sm" data-act="fac-new" data-id="'+p.id+'" data-num="'+d.num+'">Générer la facture</button></div>';}).join('')+'</div>':'')+
+   '<div class="panel"><h2>Factures</h2>'+(L.length?L.map(function(f){return '<div class="card"><div class="row" style="justify-content:space-between"><div><b>'+esc(f.num)+'</b> <span class="muted small">'+fdate(f.date)+' · devis '+esc(f.devisNum)+'</span><br>'+fTag(f)+'</div><div><b>'+fmt(f.ttc)+' FCFA'+(f.tva.on?' TTC':'')+'</b><br><span class="small muted">Encaissé : '+fmt(fPaidAmt(f))+'</span></div></div>'+
+     (f.plan.length?'<div style="margin-top:8px">'+f.plan.map(function(x,i){return '<label class="qopt" style="margin-bottom:4px"><input type="checkbox" data-fpay="'+esc(f.num)+'" data-i="'+i+'"'+(f.paid[i]?' checked':'')+'><span class="n">'+esc(x[0])+'</span><span class="p">'+fmt(x[1])+' FCFA</span></label>';}).join('')+'<p class="small muted" style="margin:2px 0 8px">Cochez chaque tranche à mesure qu’elle est encaissée.</p></div>':'')+
+     '<div class="row"><button class="btn sm" data-act="fac-view" data-id="'+p.id+'" data-num="'+f.num+'">Voir / imprimer / envoyer</button></div></div>';}).join(''):'<p class="muted">Aucune facture. Elle est générée automatiquement quand un devis passe à « accepté ».</p>')+'</div>';
+}
+function allFactures(){var o=[];S.prospects.forEach(function(p){(p.factures||[]).forEach(function(f){o.push({p:p,f:f});});});return o.sort(function(a,b){return a.f.num<b.f.num?1:-1;});}
+function viewFactures(){
+  var A=allFactures(),tot=0,enc=0;A.forEach(function(x){tot+=x.f.ttc;enc+=fPaidAmt(x.f);});
+  return '<div class="top"><h1>Factures</h1></div><div class="kpis"><div class="kpi"><b>'+A.length+'</b><span>factures émises</span></div><div class="kpi"><b>'+fmt(tot)+'</b><span>FCFA facturés</span></div><div class="kpi"><b>'+fmt(enc)+'</b><span>FCFA encaissés</span></div><div class="kpi'+(tot-enc>0?' warn':'')+'"><b>'+fmt(tot-enc)+'</b><span>FCFA restant à encaisser</span></div></div>'+
+   (A.length?'<div class="panel tbw"><table class="tb"><thead><tr><th>N°</th><th>Date</th><th>Client</th><th>Total</th><th>Statut</th><th></th></tr></thead><tbody>'+A.map(function(x){return '<tr><td><b>'+esc(x.f.num)+'</b></td><td>'+fdate(x.f.date)+'</td><td>'+esc(x.p.nom)+'</td><td>'+fmt(x.f.ttc)+' FCFA</td><td>'+fTag(x.f)+'</td><td><button class="btn line sm" data-act="fac-view" data-id="'+x.p.id+'" data-num="'+x.f.num+'">Ouvrir</button></td></tr>';}).join('')+'</tbody></table></div>':'<p class="empty">Aucune facture pour le moment. Elle se crée toute seule quand un devis est marqué « accepté ».</p>');
+}
+function facAct(a,el){
+  var p=getP(el.dataset.id);if(!p)return;
+  if(a==='fac-view')openFacture(p.id,el.dataset.num);
+  else if(a==='fac-new'){
+    var d=(p.devis||[]).filter(function(x){return x.num===el.dataset.num;})[0],r=d?makeFacture(p,d):{err:'x'};
+    if(r.err==='ninea'){toast('Renseignez le NINEA et le RCCM dans Paramètres.');return;}
+    if(r.f){save();render();openFacture(p.id,r.f.num);}
+  }
+}
+function facPay(el){
+  var p=getP(route().id),f=(p.factures||[]).filter(function(x){return x.num===el.dataset.fpay;})[0];if(!f)return;
+  var i=parseInt(el.dataset.i,10);f.paid[i]=el.checked;
+  addHist(p,'Facture '+f.num+' : '+(el.checked?'encaissé':'annulé')+' – '+f.plan[i][0]);
+  save();render();
+}
+function facParamsPanel(s){
+  return '<form class="panel" data-form="fact"><h2>Facturation (NINEA, RCCM, TVA)</h2><p class="muted small">Ces informations apparaissent sur chaque facture.'+(sellerOk()?'':' <b class="late">À compléter avant de générer une facture.</b>')+'</p>'+
+   fld('raison','Nom légal de l’entreprise',s.raison||'')+fld('adresse','Adresse',s.adresse||'')+fld('ninea','NINEA',s.ninea||'')+fld('rccm','RCCM',s.rccm||'')+
+   '<div class="fld"><label for="f-tvaOn">TVA applicable ?</label><select id="f-tvaOn" name="tvaOn">'+opt([['oui','Oui, l’entreprise facture la TVA'],['non','Non, TVA non applicable']],s.tvaOn==='non'?'non':'oui')+'</select></div>'+
+   fld('tvaRate','Taux de TVA (%)',s.tvaRate==null?18:s.tvaRate,'number',' min="0" max="100" step="0.5"')+
+   '<div class="fld"><label for="f-tvaMode">Les prix des projets sont…</label><select id="f-tvaMode" name="tvaMode">'+opt([['ht','Hors taxe : la TVA s’ajoute sur la facture'],['ttc','TTC : la TVA est déjà incluse']],s.tvaMode==='ttc'?'ttc':'ht')+'</select></div>'+
+   '<div class="fld"><label for="f-payInfo">Moyens de règlement (affichés sur la facture)</label><textarea id="f-payInfo" name="payInfo" placeholder="Ex. : Wave / Orange Money : 78 822 84 16 · Virement : banque, IBAN">'+esc(s.payInfo||'')+'</textarea></div>'+
+   fld('facNum','Prochain numéro de facture',s.facNum||1,'number',' min="1" step="1"')+'<button class="btn" type="submit">Enregistrer</button></form>';
+}
+/* ---------- import / export ---------- */
+function download(name,text,type){
+  var b=new Blob([text],{type:type||'text/plain'}),a=document.createElement('a');
+  a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();
+  setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},500);
+}
+function csvCell(v){v=String(v==null?'':v);return /[;"\n\r]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v;}
+function exportCSV(){
+  var rows=[COLS.join(';')].concat(S.prospects.map(function(p){return COLS.map(function(k){return csvCell(p[k]);}).join(';');}));
+  download('prospects-gsc-'+today()+'.csv','﻿'+rows.join('\r\n'),'text/csv;charset=utf-8');
+}
+function parseCSV(t){
+  t=String(t).replace(/^﻿/,'');
+  var first=t.split(/\r?\n/)[0]||'',del=(first.split(';').length>=first.split(',').length)?';':',';
+  var rows=[],row=[],cur='',q=false;
+  for(var i=0;i<t.length;i++){
+    var c=t[i];
+    if(q){if(c==='"'){if(t[i+1]==='"'){cur+='"';i++;}else q=false;}else cur+=c;}
+    else if(c==='"')q=true;
+    else if(c===del){row.push(cur);cur='';}
+    else if(c==='\n'||c==='\r'){if(c==='\r'&&t[i+1]==='\n')i++;row.push(cur);cur='';if(row.length>1||row[0]!=='')rows.push(row);row=[];}
+    else cur+=c;
+  }
+  if(cur!==''||row.length){row.push(cur);rows.push(row);}
+  return rows;
+}
+function norm(s){return String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]/g,'');}
+var ALIAS=(function(){
+  var m={};
+  COLS.forEach(function(k){m[norm(k)]=k;m[norm(COLLAB[k])]=k;});
+  var extra={tel:'telephone',phone:'telephone',mobile:'telephone',whatsapp:'telephone',mail:'email',courriel:'email',adresseemail:'email',nomcomplet:'nom',nomprenom:'nom',prenomnom:'nom',societe:'entreprise',entreprise:'entreprise',activite:'secteur',commentaire:'notes',remarques:'notes',source:'canal',provenance:'canal',date:'dateSubmission',horodateur:'dateSubmission',projet:'offreTestee',besoin:'description'};
+  Object.keys(extra).forEach(function(k){m[k]=extra[k];});
+  return m;
+})();
+function fixDate(s){s=String(s||'').trim();var m=s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);if(m)return m[3]+'-'+pad(m[2],2)+'-'+pad(m[1],2);var n=s.match(/^(\d{4}-\d{2}-\d{2})/);return n?n[1]:s;}
+function isDup(o){
+  var e=String(o.email||'').trim().toLowerCase(),t=digits(o.telephone).slice(-8);
+  return S.prospects.some(function(p){return (e&&String(p.email||'').toLowerCase()===e)||(t.length>=8&&digits(p.telephone).slice(-8)===t);});
+}
+function importCSV(text){
+  var rows=parseCSV(text);if(rows.length<2){toast('Fichier vide ou illisible.');return;}
+  var head=rows[0].map(function(h){return ALIAS[norm(h)]||'';});
+  if(head.indexOf('nom')<0){toast('Colonne « nom » introuvable dans le fichier.');return;}
+  var add=0,dup=0;
+  rows.slice(1).forEach(function(r){
+    var o={};head.forEach(function(k,i){if(k&&k!=='id')o[k]=(r[i]||'').trim();});
+    if(!o.nom)return;
+    if(isDup(o)){dup++;return;}
+    if(STATUTS.indexOf(o.statut)<0)o.statut='Nouveau';
+    if(o.dateSubmission)o.dateSubmission=fixDate(o.dateSubmission);else o.dateSubmission=today();
+    if(o.dateProchaineAction)o.dateProchaineAction=fixDate(o.dateProchaineAction);
+    if(o.dateDerniereAction)o.dateDerniereAction=fixDate(o.dateDerniereAction);
+    var p=newProspect(o);if(!p.canal)p.canal='Autre';add++;
+  });
+  save();render();toast(add+' prospect'+(add>1?'s':'')+' importé'+(add>1?'s':'')+(dup?', '+dup+' doublon'+(dup>1?'s':'')+' ignoré'+(dup>1?'s':''):'')+'.');
+}
+function demo(){
+  var a=newProspect({nom:'Aïssatou Ndiaye',entreprise:'NATURA (cosmétiques naturels)',telephone:'+221 77 000 00 01',email:'natura@example.com',canal:'Site web (commande)',secteur:'Cosmétiques',stade:STADES[1],description:'Produits de beauté naturels, vente sur les réseaux.',defiPrincipal:'Trouver des clients régulièrement',statut:'Diagnostic planifié',prochaineAction:'Faire le diagnostic',dateProchaineAction:addDays(today(),1)});
+  newProspect({nom:'Moussa Diallo',entreprise:'Diallo Services',telephone:'+221 77 000 00 02',canal:'WhatsApp',secteur:'Services',stade:STADES[2],description:'PME de 6 personnes, manque de procédures.',statut:'Nouveau',prochaineAction:'Planifier le diagnostic',dateProchaineAction:addDays(today(),-1)});
+  newProspect({nom:'Fatou Sow',entreprise:'Projet de boulangerie',telephone:'+221 77 000 00 03',canal:'Recommandation',stade:STADES[0],description:'Idée d’ouvrir une boulangerie à Thiès.',statut:'Nouveau'});
+  save();render();toast('3 exemples fictifs ajoutés.');
+}
+function copyText(t,el){
+  function ok(){toast('Copié.');}
+  try{navigator.clipboard.writeText(t).then(ok,function(){fb();});}catch(e){fb();}
+  function fb(){var a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();try{document.execCommand('copy');ok();}catch(e){toast('Copie impossible.');}a.remove();}
+}
+/* ---------- verrouillage ---------- */
+var unlocked=false,idleAt=Date.now(),fails=0,until=0;
+function lockNow(){try{sessionStorage.removeItem('gscPlatOk');}catch(e){}unlocked=false;showLock();}
+function showLock(msg){
+  document.getElementById('root').innerHTML='<div style="min-height:100vh;display:grid;place-items:center;background:var(--brand);padding:20px"><form id="lockf" class="panel" style="max-width:360px;width:100%;text-align:center"><img src="'+LOGO_L+'" alt="GSC Business Center" style="width:170px;margin-bottom:10px"><h2>Plateforme protégée</h2><p class="muted small">Entrez votre code d’accès.</p><div class="fld"><label class="sr" for="lockpin">Code d’accès</label><input id="lockpin" type="password" autocomplete="current-password" autofocus></div><p class="late small" id="lockmsg" role="alert">'+esc(msg||'')+'</p><button class="btn" type="submit" style="width:100%;justify-content:center">Ouvrir</button></form></div>';
+  var f=document.getElementById('lockf'),i=document.getElementById('lockpin');
+  if(i)i.focus();
+  f.addEventListener('submit',function(e){
+    e.preventDefault();
+    if(Date.now()<until){document.getElementById('lockmsg').textContent='Trop d’essais. Patientez quelques secondes.';return;}
+    pinCheck(i.value).then(function(ok){
+      if(ok){fails=0;try{sessionStorage.setItem('gscPlatOk','1');}catch(x){}unlocked=true;idleAt=Date.now();start();}
+      else{fails++;if(fails>=5){until=Date.now()+30000;fails=0;}document.getElementById('lockmsg').textContent='Code incorrect.';i.value='';i.focus();}
+    });
+  });
+}
+function start(){
+  var ok=false;try{ok=sessionStorage.getItem('gscPlatOk')==='1';}catch(e){}
+  if(pinSet()&&!ok){unlocked=false;showLock();return;}
+  unlocked=true;
+  if(!location.hash)location.hash='#/dash';else render();
+  syncStart();
+  metaStart();
+}
+/* ---------- événements ---------- */
+function formVals(f){var o={};$$('input,select,textarea',f).forEach(function(e){if(e.name&&e.type!=='radio')o[e.name]=e.value;});return o;}
+document.addEventListener('click',function(e){
+  var go=e.target.closest('[data-go]');
+  if(go&&!e.target.closest('a,button')){location.hash=go.dataset.go;return;}
+  var cp=e.target.closest('[data-copy]');
+  if(cp){copyText(cp.dataset.copy,cp);return;}
+  var el=e.target.closest('[data-act]');if(!el)return;
+  var a=el.dataset.act,id=el.dataset.id,p;
+  if(a==='import-csv'){$('#fcsv').click();}
+  else if(a==='export-csv'){exportCSV();}
+  else if(a==='mv'){p=getP(id);var i=stIdx(p.statut)+parseInt(el.dataset.d,10);if(i>=0&&i<STATUTS.length){setStatut(p,STATUTS[i]);save();render();}}
+  else if(a==='del-p'){if(confirm('Supprimer ce prospect et ses devis ?')){S.prospects=S.prospects.filter(function(x){return x.id!==id;});save();location.hash='#/prospects';}}
+  else if(a==='dv-view'){var q=getP(route().id);openSheet(q.id,el.dataset.num);}
+  else if(a==='dv-del'){if(confirm('Supprimer ce devis ?')){var q2=getP(route().id);q2.devis=q2.devis.filter(function(d){return d.num!==el.dataset.num;});addHist(q2,'Devis '+el.dataset.num+' supprimé');save();render();}}
+  else if(a==='dv-print'){window.print();}
+  else if(a==='dv-sent'){markSent(el.dataset.pid,el.dataset.num);toast('Devis marqué comme envoyé. Relance prévue dans 5 jours.');}
+  else if(a==='close-modal'){$('#modal').innerHTML='';render();}
+  else if(a==='exp-json'){download('sauvegarde-plateforme-gsc-'+today()+'.json',JSON.stringify(S),'application/json');}
+  else if(a==='imp-json'){$('#fjson').click();}
+  else if(a==='demo'){demo();}
+  else if(a==='imp-order'){orderModal('');}
+  else if(a==='order-go'){importOrder($('#ordtxt').value);}
+  else if(a==='meta-now'){var mf=el.closest('form');if(mf&&mf.dataset.form==='meta'){var mv=formVals(mf);S.settings.metaUrl=(mv.metaUrl||'').trim();S.settings.metaKey=(mv.metaKey||'').trim();save();}syncMeta(true);}
+  else if(a==='sync-now'){var sf=el.closest('form');if(sf&&sf.dataset.form==='sync'){var sv=formVals(sf);S.settings.syncUrl=(sv.syncUrl||'').trim();S.settings.syncKey=(sv.syncKey||'').trim();save();}syncOrders(true);}
+  else if(a.indexOf('entr-')===0){entrAct(a,el);}
+  else if(a.indexOf('rp-')===0){rapportAct(a,el);}
+  else if(a.indexOf('fac-')===0){facAct(a,el);}
+  else if(a==='guide-print'){entrSheet(null,parseInt(el.dataset.id,10));}
+  else if(a==='lock'){lockNow();}
+  else if(a==='pin-off'){
+    var cur=prompt('Entrez le code actuel pour retirer la protection :');
+    if(cur!==null)pinCheck(cur).then(function(ok){if(ok){localStorage.removeItem(KEYPIN);toast('Code retiré.');render();}else toast('Code incorrect.');});
+  }
+  else if(a==='reset'){if(confirm('Tout effacer : prospects, devis et réglages ?')&&confirm('Dernière confirmation : cette action est définitive. Avez-vous exporté une sauvegarde ?')){S=defaults();save();render();toast('Données effacées.');}}
+  else if(a==='restore-bak'){
+    var b=[];try{b=JSON.parse(localStorage.getItem(KEYB)||'[]');}catch(x){}
+    $('#modal').innerHTML='<div class="modal"><div class="box"><h2>Copies automatiques</h2>'+(b.length?b.slice().reverse().map(function(s,k){var i=b.length-1-k,n=0;try{n=JSON.parse(s.data).prospects.length;}catch(x){}return '<div class="row card"><span>'+new Date(s.d).toLocaleString('fr-FR')+' · '+n+' prospects</span><button class="btn sm" data-act="do-restore" data-i="'+i+'">Restaurer</button></div>';}).join(''):'<p class="muted">Aucune copie pour le moment.</p>')+'<button class="btn line" data-act="close-modal">Fermer</button></div></div>';
+  }
+  else if(a==='do-restore'){var bb=JSON.parse(localStorage.getItem(KEYB)||'[]'),it=bb[parseInt(el.dataset.i,10)];if(it&&confirm('Remplacer les données actuelles par cette copie ?')){S=JSON.parse(it.data);save();$('#modal').innerHTML='';render();toast('Copie restaurée.');}}
+});
+document.addEventListener('submit',function(e){
+  var f=e.target.closest('form[data-form]');if(!f)return;
+  e.preventDefault();
+  var t=f.dataset.form,p;
+  if(t==='prospect'){
+    var v=formVals(f);
+    if((v.nom||'').trim().length<2){$('#fmsg').textContent='Indiquez le nom du prospect.';$('#f-nom').focus();return;}
+    if(v.email&&!validEmail(v.email)){$('#fmsg').textContent='Adresse e-mail invalide.';$('#f-email').focus();return;}
+    if(f.dataset.id){
+      p=getP(f.dataset.id);var oldSt=p.statut;
+      COLS.forEach(function(k){if(k!=='id'&&k!=='dateSubmission'&&v[k]!==undefined)p[k]=v[k].trim();});
+      if(p.statut!==oldSt){var ns=p.statut;p.statut=oldSt;setStatut(p,ns);}
+      p.dateDerniereAction=today();addHist(p,'Fiche modifiée');save();toast('Prospect enregistré.');render();
+    }else{
+      if(isDup(v)&&!confirm('Un prospect avec le même e-mail ou téléphone existe déjà. L’ajouter quand même ?'))return;
+      var o={};COLS.forEach(function(k){if(k!=='id'&&v[k]!==undefined)o[k]=v[k].trim();});
+      if(!o.prochaineAction){o.prochaineAction='Planifier le diagnostic gratuit';o.dateProchaineAction=addDays(today(),2);}
+      p=newProspect(o);save();toast('Prospect ajouté.');location.hash='#/p/'+p.id;
+    }
+  }else if(t==='diag'){
+    p=getP(f.dataset.id);var dg=readDiag(f);
+    if(!diagScore(dg)){toast('Évaluez au moins un besoin.');return;}
+    p.diag=dg;if(dg.stade)p.stade=dg.stade;
+    if(stIdx(p.statut)<2){setStatut(p,'Diagnostic réalisé');}
+    p.prochaineAction='Envoyer le devis (sous 48 h)';p.dateProchaineAction=addDays(today(),2);
+    var sc=diagScore(dg);addHist(p,'Diagnostic réalisé : maturité '+sc.score+'/100 ('+sc.label+')');
+    save();DV=null;toast('Diagnostic enregistré.');render();
+  }else if(t==='dv'){
+    p=getP(route().id);genDevis(p,(f.elements.notes.value||'').trim());
+  }else if(t==='params'){
+    var q=formVals(f),s=S.settings;
+    s.consultants=q.consultants.split(',').map(function(x){return x.trim();}).filter(Boolean);if(!s.consultants.length)s.consultants=['Consultant'];
+    ['phone','whatsapp','email','rdv','website','legal'].forEach(function(k){s[k]=q[k].trim();});
+    s.whatsapp=digits(s.whatsapp);s.validite=parseInt(q.validite,10)||15;save();toast('Paramètres enregistrés.');
+  }else if(t==='catalog'){
+    var c=formVals(f);S.settings.catalog=CATALOG.map(function(x){var n=parseInt(c['c'+x.id],10);return {id:x.id,price:isNaN(n)||n<0?x.price:n};});save();toast('Prix enregistrés.');
+  }else if(t==='pin'){
+    var pv=formVals(f),msg=$('#pinmsg');
+    if((pv.pin1||'').length<4){msg.textContent='Le code doit contenir au moins 4 caractères.';return;}
+    if(pv.pin1!==pv.pin2){msg.textContent='Les deux codes ne sont pas identiques.';return;}
+    var setIt=function(){hashPin(pv.pin1).then(function(h){localStorage.setItem(KEYPIN,h);try{sessionStorage.setItem('gscPlatOk','1');}catch(x){}toast('Code enregistré.');render();});};
+    if(pinSet())pinCheck(pv.cur||'').then(function(ok){if(ok)setIt();else msg.textContent='Code actuel incorrect.';});else setIt();
+  }else if(t==='meta'){
+    var my=formVals(f),mu=(my.metaUrl||'').trim();
+    if(mu&&mu.indexOf('https://')!==0){metaMsg('L’adresse doit commencer par https://');return;}
+    S.settings.metaUrl=mu;S.settings.metaKey=(my.metaKey||'').trim();save();toast('Connexion Meta enregistrée.');render();if(metaOn())metaStart();
+  }else if(t==='sync'){
+    var sy=formVals(f),su=(sy.syncUrl||'').trim();
+    if(su&&su.indexOf('https://')!==0){syncMsg('L’adresse doit commencer par https://');return;}
+    S.settings.syncUrl=su;S.settings.syncKey=(sy.syncKey||'').trim();save();toast('Connexion enregistrée.');render();if(syncOn())syncStart();
+  }else if(t==='fact'){
+    var fv=formVals(f),fs=S.settings;
+    ['raison','adresse','ninea','rccm','payInfo','tvaOn','tvaMode'].forEach(function(k){fs[k]=(fv[k]||'').trim();});
+    fs.tvaRate=Math.max(0,parseFloat(fv.tvaRate))||0;fs.facNum=Math.max(1,parseInt(fv.facNum,10)||1);
+    save();toast('Facturation enregistrée.');render();
+  }else if(t==='rapport'){
+    rpSave(f);toast('Rapport enregistré.');render();
+  }else if(t==='entr'){
+    entrSave(f);
+  }else if(t==='tpl'){
+    var m=formVals(f);S.settings.tpl.forEach(function(x){if(m[x.id]!==undefined)x.m=m[x.id];});save();toast('Modèles enregistrés.');
+  }
+});
+document.addEventListener('input',function(e){
+  var el=e.target;
+  if(el.dataset&&el.dataset.filt==='q'){filt.q=el.value;refreshList();}
+});
+document.addEventListener('change',function(e){
+  var el=e.target,f;
+  if(el.dataset&&el.dataset.filt){filt[el.dataset.filt]=el.value;refreshList();return;}
+  if(el.id==='fcsv'&&el.files[0]){var r=new FileReader();r.onload=function(){importCSV(r.result);};r.readAsText(el.files[0],'utf-8');el.value='';return;}
+  if(el.id==='fjson'&&el.files[0]){var r2=new FileReader();r2.onload=function(){try{var o=JSON.parse(r2.result);if(!o.prospects||!o.settings)throw 0;if(confirm('Remplacer toutes les données actuelles par cette sauvegarde ?')){S=o;S.settings=Object.assign(defaults().settings,S.settings);save();render();toast('Sauvegarde restaurée.');}}catch(x){toast('Fichier de sauvegarde invalide.');}};r2.readAsText(el.files[0]);el.value='';return;}
+  if(el.dataset&&el.dataset.fpay){facPay(el);return;}
+  if(el.hasAttribute&&el.hasAttribute('data-msgp')){msgP=el.value;render();return;}
+  if(el.hasAttribute&&el.hasAttribute('data-entrp')){entrP[route().id]=parseInt(el.value,10);render();return;}
+  if(el.dataset&&el.dataset.dvst){
+    var p=getP(route().id),d=p.devis.filter(function(x){return x.num===el.dataset.dvst;})[0],ns=el.value;
+    d.statut=ns;
+    if(ns==='envoyé'){setStatut(p,'Devis envoyé');p.prochaineAction='Relancer le devis '+d.num;p.dateProchaineAction=addDays(today(),5);}
+    else if(ns==='accepté'){setStatut(p,'Signé / Client','devis '+d.num);p.prochaineAction='Réunion de démarrage';p.dateProchaineAction=addDays(today(),3);}
+    else if(ns==='refusé'){setStatut(p,'Perdu','devis '+d.num+' refusé');p.prochaineAction='';p.dateProchaineAction='';}
+    addHist(p,'Devis '+d.num+' : '+ns);
+    var nf=ns==='accepté'?autoFacture(p,d):null;
+    save();render();if(nf){toast('Devis accepté : facture '+nf.num+' générée.');location.hash='#/p/'+p.id+'/fact';}return;
+  }
+  f=el.closest&&el.closest('form[data-form]');
+  if(f&&f.dataset.form==='diag'){$('#dgres').innerHTML=diagResult(readDiag(f));}
+  if(f&&f.dataset.form==='dv'){dvUpdate();}
+  if(f&&f.dataset.form==='entr'){entrSave(f,true);}
+  if(f&&f.dataset.form==='rapport'){rpSave(f);}
+});
+document.addEventListener('dragstart',function(e){var k=e.target.closest&&e.target.closest('.kc');if(k){e.dataTransfer.setData('text/plain',k.dataset.id);e.dataTransfer.effectAllowed='move';}});
+document.addEventListener('dragover',function(e){var c=e.target.closest&&e.target.closest('.col');if(c){e.preventDefault();c.classList.add('over');}});
+document.addEventListener('dragleave',function(e){var c=e.target.closest&&e.target.closest('.col');if(c)c.classList.remove('over');});
+document.addEventListener('drop',function(e){
+  var c=e.target.closest&&e.target.closest('.col');if(!c)return;
+  e.preventDefault();var p=getP(e.dataTransfer.getData('text/plain'));
+  if(p&&c.dataset.col!==p.statut){setStatut(p,c.dataset.col);save();render();}
+});
+window.addEventListener('hashchange',function(){if(unlocked)render();});
+['click','keydown','input'].forEach(function(ev){document.addEventListener(ev,function(){idleAt=Date.now();},true);});
+setInterval(function(){if(unlocked&&pinSet()&&Date.now()-idleAt>900000)lockNow();},30000);
+start();
+})();
+</script></body></html>
