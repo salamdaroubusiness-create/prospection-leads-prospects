@@ -826,7 +826,7 @@ function rpData(p){
 }
 /* contenu du rapport : livrables, outils de mise en œuvre et de pilotage par projet (à adapter si besoin) */
 var RAPP={
- 1:{l:['Une synthèse de votre projet en 1 page','Le choix de la forme juridique, expliqué simplement','Votre dossier administratif complet, prêt à déposer (statuts, NINEA, RCCM)','Votre business plan (simplifié ou complet selon votre besoin)','Vos prévisions chiffrées et votre point d’équilibre','Un dossier de financement prêt à présenter, si nécessaire'],
+ 1:{l:['Une synthèse de votre projet en 1 page','Le choix de la forme juridique, expliqué simplement','Votre dossier administratif complet, prêt à déposer (statuts, NINEA, RCCM)','Votre business plan (simplifié ou complet selon votre besoin)','Vos prévisions chiffrées et votre point d’équilibre','Un dossier de financement prêt à présenter, si nécessaire','Un dossier pour la soumission aux marchés publics et privés','Un accès à notre plateforme de comptabilité légère'],
     o:['Liste des démarches et des pièces à fournir, étape par étape','Modèles de statuts et de documents à remplir','Modèle de business plan et de prévisions (fichier Excel)','Une séance de travail avec votre consultant à chaque étape'],
     p:['Tableau de suivi des démarches (fait / en cours / à faire)','Tableau de bord financier mensuel : ventes, dépenses, trésorerie','Point d’avancement toutes les 2 semaines']},
  2:{l:['Votre client idéal et votre offre phare, avec un prix clair','Votre parcours de vente écrit, du premier contact à l’encaissement','Vos messages de vente et de relance prêts à l’emploi (WhatsApp, appel, e-mail)','Votre système de suivi des prospects, en place et utilisé','Votre première campagne de prospection lancée'],
@@ -857,6 +857,7 @@ var RAPP={
 var RPPLAT=[
  {n:'Plateforme de gestion de l’entreprise',r:'Gérez votre entreprise au quotidien : devis, factures, clients, stocks et rapports au même endroit.',pour:['gestion','outils','fin'],st:''},
  {n:'Page de vente',r:'C’est la vitrine de votre entreprise : elle assure la promotion de vos produits ou services.',pour:['vente','outils','strat'],st:''},
+ {n:'Plateformes digitales',r:'Elles donnent de la visibilité à votre entreprise et à vos offres de services ou de produits.',pour:['vente','outils','strat'],st:''},
  {n:'Suivi des prospects et des ventes',r:'Notez chaque contact, relancez au bon moment et voyez combien de ventes vous réalisez.',pour:['vente'],st:''},
  {n:'Planification des publications',r:'Préparez et programmez vos publications sur les réseaux sociaux.',pour:['vente'],st:''},
  {n:'Formations en ligne GSC',r:'Formez-vous et formez votre équipe à votre rythme, avec des vidéos et des exercices.',pour:['equipe','strat'],st:''}
@@ -865,7 +866,7 @@ function rpPlat(D){
   var need={};D.bl.forEach(function(b){need[b.k]=1;});
   var L=RPPLAT.filter(function(x){return x.pour.some(function(k){return need[k];});});
   if(!L.length)L=RPPLAT.slice(0,1);
-  return L.slice(0,4);
+  return L.slice(0,5);
 }
 function rpText(p,D){
   var top=D.bl.slice(0,3).map(function(b,i){return (i+1)+') '+needName(b.k);}).join(' ; ');
