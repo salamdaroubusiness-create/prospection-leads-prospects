@@ -543,6 +543,7 @@ function sheetHtml(p,d){
    (forf.length?'<tr><td colspan="2">Total au forfait</td><td class="r">'+fmt(d.calc.list)+'</td></tr>'+(d.calc.maj?'<tr><td colspan="2">Formule renforcée (+25 %)</td><td class="r">+ '+fmt(d.calc.maj)+'</td></tr>':'')+(d.calc.rate?'<tr><td colspan="2">Remises ('+d.calc.rate+' %)</td><td class="r">− '+fmt(d.calc.rem)+'</td></tr>':'')+'<tr class="tot"><td colspan="2">TOTAL À PAYER</td><td class="r">'+fmt(d.calc.net)+' FCFA</td></tr>':'')+'</tbody></table>'+
    (forf.length?'<p><b>Modalités de paiement</b></p><table><tbody>'+payPlan(d.calc.net,d.o.comptant).map(function(x){return '<tr><td>'+x[0]+'</td><td class="r">'+fmt(x[1])+' FCFA</td></tr>';}).join('')+'</tbody></table>':'')+
    (d.calc.monthTotal?'<p>Services facturés chaque mois : <b>'+fmt(d.calc.monthTotal)+' FCFA / mois</b>.</p>':'')+
+   '<p style="margin-top:14px"><b>Les plateformes pour gérer votre entreprise</b></p><ol style="margin:6px 0 10px 20px;padding:0;font-size:13px">'+dvPlat().map(function(x){return '<li style="padding:2px 0;break-inside:avoid"><b>'+esc(x.n)+'</b> : '+esc(x.r)+'</li>';}).join('')+'</ol>'+
    (d.notes?'<p><b>Note :</b> '+esc(d.notes).replace(/\n/g,'<br>')+'</p>':'')+
    '<p class="fine">La durée annoncée est un maximum : le projet peut être livré plus tôt. Chaque projet est découpé en étapes, avec un livrable à la fin de chacune. Prix en FCFA, fixes pour toute la durée du projet. '+(tvaCfg().on?(tvaCfg().mode==='ttc'?'Montants TTC, TVA de '+tvaCfg().rate+' % incluse.':'Montants hors taxe : la TVA de '+tvaCfg().rate+' % est ajoutée sur la facture.'):'TVA non applicable.')+'</p>'+
    '<div class="sig"><div>Bon pour accord, date et signature du client</div><div>Pour GSC Business Center<br>'+esc(p.consultant||'')+'</div></div><p class="fine">'+esc(S.settings.legal)+'</p></div>';
@@ -862,6 +863,8 @@ var RPPLAT=[
  {n:'Planification des publications',r:'Préparez et programmez vos publications sur les réseaux sociaux.',pour:['vente'],st:''},
  {n:'Formations en ligne GSC',r:'Formez-vous et formez votre équipe à votre rythme, avec des vidéos et des exercices.',pour:['equipe','strat'],st:''}
 ];
+var DVPLAT_ORDRE=['Plateforme de gestion de l’entreprise','Page de vente','Plateformes digitales','Suivi des prospects et des ventes','Planification des publications'];
+function dvPlat(){return DVPLAT_ORDRE.map(function(n){return RPPLAT.filter(function(x){return x.n===n;})[0];}).filter(Boolean);}
 function rpPlat(D){
   var need={};D.bl.forEach(function(b){need[b.k]=1;});
   var L=RPPLAT.filter(function(x){return x.pour.some(function(k){return need[k];});});
